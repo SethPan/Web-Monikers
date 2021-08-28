@@ -25,11 +25,10 @@ const cards = [
   { title: 8, description: 8, value: 8 },
 ];
 let cardIndex = 0;
+let gameActive = false;
 
 const io = new Server(server);
 io.on("connection", (socket) => {
-  let gameActive = false;
-
   console.log("a user connected");
   socket.on("disconnect", () => {
     console.log("user disconnected");
