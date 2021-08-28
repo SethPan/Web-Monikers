@@ -72,6 +72,7 @@
       const input = document.getElementById("input");
       const start = document.getElementById("start");
       const cards = document.getElementById("cards");
+      const typing = document.activeElement === input;
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -88,7 +89,7 @@
 
       document.addEventListener("keyup", function (event) {
         event.preventDefault();
-        if (event.keyCode === 13) {
+        if (event.keyCode === 13 && !typing) {
           socket.emit("new card");
         }
       });
