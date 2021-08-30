@@ -53,11 +53,17 @@
       #messages > li:nth-child(odd) {
         background: #efefef;
       }
+      #cards {
+        height: 375px;
+        width: 250px;
+        border: 5px solid black;
+        border-style: solid;
+      }
     </style>
   </head>
   <body>
-    <button id="start">Start Game</button>
     <div id="cards"></div>
+    <button id="start">Start Game</button>
     <div id="response"></div>
     <div id="scoreboard"></div>
     <ul id="messages"></ul>
@@ -99,15 +105,11 @@
           socket.emit("success");
           socket.emit("new card");
         }
+        //made this last
+        if (document.activeElement === document.getElementById("team1")) {
+          socket.emit("team 1");
+        }
       });
-
-      // document.addEventListener("keyup", function (event) {
-      //   event.preventDefault();
-      //   const typing = document.activeElement === input;
-      //   if (event.keyCode === 13 && !typing) {
-      //     socket.emit("new card");
-      //   }
-      // });
 
       socket.on("chat message", function (msg) {
         var item = document.createElement("li");
@@ -118,6 +120,23 @@
 
       socket.on("start game", function () {
         start.remove();
+
+        //made this last
+        let team1 = document.createElement("button");
+        team1.textContent = "Team 1";
+        team1.setAttribute("id", "team1");
+        response.append(team1);
+        //made this last
+        let team2 = document.createElement("button");
+        team2.textContent = "Team 2";
+        team2.setAttribute("id", "team2");
+        response.append(team2);
+      });
+
+      socket.on("team chosen", function () {
+        team1.remove();
+        team2.remove();
+
         let skip = document.createElement("button");
         skip.textContent = "skip";
         skip.setAttribute("id", "skip");

@@ -10,8 +10,21 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 
+const users = {};
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
+  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  let iterator = 1;
+
+  if (!users[ip]) {
+    users[ip] = "no team";
+  } else {
+    newIp = ip.concat(".", iterator);
+    users[newIp] = "no team";
+    iterator++;
+  }
+  console.log(users);
 });
 
 const cards = [
