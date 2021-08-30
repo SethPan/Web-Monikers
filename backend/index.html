@@ -105,9 +105,12 @@
           socket.emit("success");
           socket.emit("new card");
         }
-        //made this last
+
         if (document.activeElement === document.getElementById("team1")) {
           socket.emit("team 1");
+        }
+        if (document.activeElement === document.getElementById("team2")) {
+          socket.emit("team 2");
         }
       });
 
@@ -121,12 +124,11 @@
       socket.on("start game", function () {
         start.remove();
 
-        //made this last
         let team1 = document.createElement("button");
         team1.textContent = "Team 1";
         team1.setAttribute("id", "team1");
         response.append(team1);
-        //made this last
+
         let team2 = document.createElement("button");
         team2.textContent = "Team 2";
         team2.setAttribute("id", "team2");

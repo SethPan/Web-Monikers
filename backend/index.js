@@ -10,21 +10,8 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 
-const users = {};
-
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
-  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-  let iterator = 1;
-
-  if (!users[ip]) {
-    users[ip] = "no team";
-  } else {
-    newIp = ip.concat(".", iterator);
-    users[newIp] = "no team";
-    iterator++;
-  }
-  console.log(users);
 });
 
 const cards = [
@@ -41,12 +28,29 @@ let cardIndex = 0;
 let gameActive = false;
 let removedCards = [];
 let points = 0;
+const users = {};
 
 const io = new Server(server);
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  const id = socket.id;
+  if (!users[id]) {
+    users[id] = "no team";
+    console.log("a user connected: ", socket.id);
+  }
+
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    console.log("user disconnected: ", socket.id);
+    delete users[id];
+  });
+
+  socket.on("team 1", () => {
+    users[id] = "team 1";
+    socket.emit("team chosen");
+  });
+
+  socket.on("team 2", () => {
+    users[id] = "team 2";
+    socket.emit("team chosen");
   });
 
   socket.on("chat message", (msg) => {
