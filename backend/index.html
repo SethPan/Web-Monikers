@@ -58,6 +58,8 @@
   <body>
     <button id="start">Start Game</button>
     <div id="cards"></div>
+    <div id="response"></div>
+    <div id="scoreboard"></div>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" />
@@ -72,6 +74,8 @@
       const input = document.getElementById("input");
       const start = document.getElementById("start");
       const cards = document.getElementById("cards");
+      const response = document.getElementById("response");
+      const scoreboard = document.getElementById("scoreboard");
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -86,13 +90,24 @@
         socket.emit("start game");
       });
 
-      document.addEventListener("keyup", function (event) {
-        event.preventDefault();
-        const typing = document.activeElement === input;
-        if (event.keyCode === 13 && !typing) {
+      response.addEventListener("click", function (click) {
+        click.preventDefault();
+        if (document.activeElement === document.getElementById("skip")) {
+          socket.emit("new card");
+        }
+        if (document.activeElement === document.getElementById("success")) {
+          socket.emit("success");
           socket.emit("new card");
         }
       });
+
+      // document.addEventListener("keyup", function (event) {
+      //   event.preventDefault();
+      //   const typing = document.activeElement === input;
+      //   if (event.keyCode === 13 && !typing) {
+      //     socket.emit("new card");
+      //   }
+      // });
 
       socket.on("chat message", function (msg) {
         var item = document.createElement("li");
@@ -103,15 +118,36 @@
 
       socket.on("start game", function () {
         start.remove();
+        let skip = document.createElement("button");
+        skip.textContent = "skip";
+        skip.setAttribute("id", "skip");
+        response.append(skip);
+
+        let success = document.createElement("button");
+        success.textContent = "success";
+        success.setAttribute("id", "success");
+        response.append(success);
       });
 
       socket.on("new card", function (cardInfo) {
         const title = cardInfo.title;
         const description = cardInfo.description;
         const value = cardInfo.value;
-        let card = document.createElement("div");
-        card.textContent = title;
-        cards.replaceChildren(card);
+
+        let cardTitle = document.createElement("div");
+        cardTitle.textContent = title;
+        let cardDescription = document.createElement("div");
+        cardDescription.textContent = description;
+        let cardValue = document.createElement("div");
+        cardValue.textContent = value;
+
+        cards.replaceChildren(cardTitle, cardDescription, cardValue);
+      });
+
+      socket.on("scorring", function (scorring) {
+        let score = document.createElement("div");
+        score.textContent = `points: ${scorring}`;
+        scoreboard.replaceChildren(score);
       });
     </script>
   </body>

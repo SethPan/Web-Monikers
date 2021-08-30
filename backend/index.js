@@ -26,6 +26,8 @@ const cards = [
 ];
 let cardIndex = 0;
 let gameActive = false;
+let removedCards = [];
+let points = 0;
 
 const io = new Server(server);
 io.on("connection", (socket) => {
@@ -46,20 +48,29 @@ io.on("connection", (socket) => {
     io.emit("start game");
     gameActive = true;
     io.emit("new card", cards[cardIndex]);
-    cardIndex++;
-    if (cardIndex > cards.length - 1) {
-      cardIndex = 0;
-    }
   });
 
   socket.on("new card", () => {
+    cardIndex++;
     if (gameActive) {
-      io.emit("new card", cards[cardIndex]);
-      cardIndex++;
       if (cardIndex > cards.length - 1) {
         cardIndex = 0;
       }
+      while (removedCards.includes(cardIndex)) {
+        cardIndex++;
+        if (cardIndex > cards.length - 1) {
+          cardIndex = 0;
+        }
+      }
+
+      io.emit("new card", cards[cardIndex]);
+      io.emit("scorring", points);
     }
+  });
+
+  socket.on("success", () => {
+    removedCards.push(cardIndex);
+    points = points + cards[cardIndex].value;
   });
 });
 
