@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Web Monikers</title>
     <style>
       body {
         margin: 0;
@@ -66,6 +66,7 @@
     <button id="start">Start Game</button>
     <div id="response"></div>
     <div id="scoreboard"></div>
+    <div id="game results"></div>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" />
@@ -82,6 +83,7 @@
       const cards = document.getElementById("cards");
       const response = document.getElementById("response");
       const scoreboard = document.getElementById("scoreboard");
+      const gameResults = document.getElementById("game results");
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -166,9 +168,18 @@
       });
 
       socket.on("scorring", function (scorring) {
-        let score = document.createElement("div");
-        score.textContent = `points: ${scorring}`;
-        scoreboard.replaceChildren(score);
+        const { pointsT1, pointsT2 } = scorring;
+        let team1score = document.createElement("div");
+        let team2score = document.createElement("div");
+        team1score.textContent = `team 1: ${pointsT1}`;
+        team2score.textContent = `team 2: ${pointsT2}`;
+        scoreboard.replaceChildren(team1score, team2score);
+      });
+
+      socket.on("game over", function (results) {
+        let winner = document.createElement("div");
+        winner.textContent = `Winner: ${results}`;
+        gameResults.replaceChildren(winner);
       });
     </script>
   </body>

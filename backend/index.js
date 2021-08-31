@@ -27,8 +27,16 @@ const cards = [
 let cardIndex = 0;
 let gameActive = false;
 let removedCards = [];
-let points = 0;
+let pointsT1 = 0;
+let pointsT2 = 0;
 const users = {};
+let turn = 1;
+
+function whatTeamTurn() {
+  if (turn % 2 === 0) {
+    return "team 2";
+  } else return "team 1";
+}
 
 const io = new Server(server);
 io.on("connection", (socket) => {
@@ -57,7 +65,7 @@ io.on("connection", (socket) => {
     if (gameActive) {
       io.emit("chat message", msg);
     } else {
-      io.emit("chat message", "The game has not started yet.");
+      socket.emit("chat message", "The game has not started yet.");
     }
   });
 
@@ -68,26 +76,52 @@ io.on("connection", (socket) => {
   });
 
   socket.on("new card", () => {
-    cardIndex++;
-    if (gameActive) {
-      if (cardIndex > cards.length - 1) {
-        cardIndex = 0;
-      }
-      while (removedCards.includes(cardIndex)) {
-        cardIndex++;
+    if (whatTeamTurn() === users[socket.id]) {
+      cardIndex++;
+      if (gameActive) {
         if (cardIndex > cards.length - 1) {
           cardIndex = 0;
         }
-      }
+        while (removedCards.includes(cardIndex)) {
+          cardIndex++;
+          if (cardIndex > cards.length - 1) {
+            cardIndex = 0;
+          }
+        }
 
-      io.emit("new card", cards[cardIndex]);
-      io.emit("scorring", points);
+        const score = { pointsT1, pointsT2 };
+        io.emit("new card", cards[cardIndex]);
+        io.emit("scorring", score);
+        turn++;
+      }
+    } else {
+      socket.emit("chat message", "it is not your turn yet");
     }
   });
 
   socket.on("success", () => {
-    removedCards.push(cardIndex);
-    points = points + cards[cardIndex].value;
+    if (whatTeamTurn() === users[socket.id]) {
+      removedCards.push(cardIndex);
+      if (users[socket.id] === "team 1") {
+        pointsT1 = pointsT1 + cards[cardIndex].value;
+      }
+      if (users[socket.id] === "team 2") {
+        pointsT2 = pointsT2 + cards[cardIndex].value;
+      }
+    }
+    if (cards.length === removedCards.length) {
+      let winner = null;
+      if (pointsT1 > pointsT2) {
+        winner = "Team 1";
+      }
+      if (pointsT2 > pointsT1) {
+        winner = "Team 2";
+      }
+      if (pointsT1 === pointsT2) {
+        winner = "Tie Game";
+      }
+      io.emit("game over", winner);
+    }
   });
 });
 
