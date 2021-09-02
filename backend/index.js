@@ -17,12 +17,12 @@ app.get("/", (req, res) => {
 const cards = [
   { title: 1, description: 1, value: 1 },
   { title: 2, description: 2, value: 2 },
-  { title: 3, description: 3, value: 3 },
-  { title: 4, description: 4, value: 4 },
-  { title: 5, description: 5, value: 5 },
-  { title: 6, description: 6, value: 6 },
-  { title: 7, description: 7, value: 7 },
-  { title: 8, description: 8, value: 8 },
+  // { title: 3, description: 3, value: 3 },
+  // { title: 4, description: 4, value: 4 },
+  // { title: 5, description: 5, value: 5 },
+  // { title: 6, description: 6, value: 6 },
+  // { title: 7, description: 7, value: 7 },
+  // { title: 8, description: 8, value: 8 },
 ];
 let cardIndex = 0;
 let gameActive = false;
@@ -79,19 +79,26 @@ io.on("connection", (socket) => {
     if (whatTeamTurn() === users[socket.id]) {
       cardIndex++;
       if (gameActive) {
+        //checking if game is over
+        if (cards.length === removedCards.length) {
+          gameActive = false;
+        }
+
         if (cardIndex > cards.length - 1) {
           cardIndex = 0;
         }
-        while (removedCards.includes(cardIndex)) {
-          cardIndex++;
-          if (cardIndex > cards.length - 1) {
-            cardIndex = 0;
+        if (gameActive) {
+          while (removedCards.includes(cardIndex)) {
+            cardIndex++;
+            if (cardIndex > cards.length - 1) {
+              cardIndex = 0;
+            }
           }
         }
 
         const score = { pointsT1, pointsT2 };
-        io.emit("new card", cards[cardIndex]);
         io.emit("scorring", score);
+        io.emit("new card", cards[cardIndex]);
         turn++;
       }
     } else {
@@ -101,14 +108,15 @@ io.on("connection", (socket) => {
 
   socket.on("success", () => {
     if (whatTeamTurn() === users[socket.id]) {
-      removedCards.push(cardIndex);
       if (users[socket.id] === "team 1") {
         pointsT1 = pointsT1 + cards[cardIndex].value;
       }
       if (users[socket.id] === "team 2") {
         pointsT2 = pointsT2 + cards[cardIndex].value;
       }
+      removedCards.push(cardIndex);
     }
+
     if (cards.length === removedCards.length) {
       let winner = null;
       if (pointsT1 > pointsT2) {
