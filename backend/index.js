@@ -17,12 +17,12 @@ app.get("/", (req, res) => {
 const cards = [
   { title: 1, description: 1, value: 1 },
   { title: 2, description: 2, value: 2 },
-  // { title: 3, description: 3, value: 3 },
-  // { title: 4, description: 4, value: 4 },
-  // { title: 5, description: 5, value: 5 },
-  // { title: 6, description: 6, value: 6 },
-  // { title: 7, description: 7, value: 7 },
-  // { title: 8, description: 8, value: 8 },
+  { title: 3, description: 3, value: 3 },
+  { title: 4, description: 4, value: 4 },
+  { title: 5, description: 5, value: 5 },
+  { title: 6, description: 6, value: 6 },
+  { title: 7, description: 7, value: 7 },
+  { title: 8, description: 8, value: 8 },
 ];
 let cardIndex = 0;
 let gameActive = false;
