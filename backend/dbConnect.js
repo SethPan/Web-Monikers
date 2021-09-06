@@ -1,15 +1,17 @@
 const { Pool, Client } = require("pg");
-//change PASSWORD below, or configure an env
-//replace DBNAME with the database name
+
 const connectionString =
-  "postgressql://postgres:PASSWORD@localhost:5432/DBNAME";
+  "postgressql://postgres:password@localhost:5432/WebMonikers";
 
 const client = new Client({
   connectionString: connectionString,
 });
 
 client.connect();
-client.query("SELECT * from blablablah", (err, res) => {
-  console.log(err, res);
+client.query(
+  "CREATE TABLE IF NOT EXISTS users (username text, password text, id integer)"
+);
+client.query("SELECT * from users", (err, res) => {
+  console.log("err: \n", err, "\n\n\n\n res: \n", res);
   client.end();
 });
