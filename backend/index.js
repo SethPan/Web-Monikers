@@ -14,6 +14,14 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+class cardPool {
+  constructor(title, description, value) {
+    this.title = title;
+    this.title.description = description;
+    this.title.value = value;
+  }
+}
+
 const cards = [
   { title: 1, description: 1, value: 1 },
   { title: 2, description: 2, value: 2 },
