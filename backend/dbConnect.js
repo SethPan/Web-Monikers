@@ -9,7 +9,7 @@ const client = new Client({
 
 client.connect();
 client.query(
-  "CREATE TABLE IF NOT EXISTS users (username text, password text, id integer)"
+  "CREATE TABLE IF NOT EXISTS users (username text, password text, id integer, email text)"
 );
 client.query(
   "CREATE TABLE IF NOT EXISTS cards (cardName text, description text, points integer, uploaderId integer)"
