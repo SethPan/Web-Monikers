@@ -24,6 +24,7 @@ client.query("SELECT * from cards", (err, res) => {
   console.log("err: \n", err, "\n\n\n\n res: \n", res);
   client.end();
 });
+//
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
