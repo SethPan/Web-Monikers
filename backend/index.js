@@ -5,26 +5,7 @@ const server = http.createServer(app);
 const port = 3050;
 const cors = require("cors");
 const { Server } = require("socket.io");
-
-//db stuff
-const { Pool, Client } = require("pg");
-const connectionString =
-  "postgressql://postgres:password@localhost:5432/WebMonikers";
-const client = new Client({
-  connectionString: connectionString,
-});
-client.connect();
-client.query(
-  "CREATE TABLE IF NOT EXISTS users (username text, password text, id integer, email text)"
-);
-client.query(
-  "CREATE TABLE IF NOT EXISTS cards (cardName text, description text, points integer, uploaderId integer)"
-);
-client.query("SELECT * from cards", (err, res) => {
-  console.log("err: \n", err, "\n\n\n\n res: \n", res);
-  client.end();
-});
-//
+import handleLogin from "backend/routes/handleLogin.js";
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -34,6 +15,10 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/userLogin", (req, res) => {
+  handleLogin(req, res);
+});
+
 class cardPool {
   constructor(title, description, value) {
     this.title = title;
@@ -41,7 +26,7 @@ class cardPool {
     this.title.value = value;
   }
 }
-
+//make this retrieve cards from db
 const cards = [
   { title: 1, description: 1, value: 1 },
   { title: 2, description: 2, value: 2 },

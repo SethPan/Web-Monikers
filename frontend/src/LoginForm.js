@@ -4,13 +4,29 @@ import { useState } from "react";
 import axios from "axios";
 
 function LoginForm() {
-  const [text, setText] = useState("");
+  const [emailText, setEmailText] = useState("");
+  const [passwordText, setPasswordText] = useState("");
 
-  function handleTyping(event) {
-    setText(event.target.value);
+  function handleEmailTyping(event) {
+    setEmailText(event.target.value);
   }
 
-  function handleSubmit() {}
+  function handlePasswordTyping(event) {
+    setPasswordText(event.target.value);
+  }
+
+  function handleSubmit() {
+    const userLoginInput = { email: emailText, password: passwordText };
+    axios
+      .get("http://localhost:3050/userLogin", userLoginInput)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {});
+  }
 
   function handleKeyPress(event) {
     if (event.charCode === 13) {
@@ -26,8 +42,8 @@ function LoginForm() {
           <Form.Control
             type="email"
             placeholder="Enter email"
-            value={text}
-            onChange={handleTyping}
+            value={emailText}
+            onChange={handleEmailTyping}
             onKeyPress={handleKeyPress}
           />
           <Form.Text className="text-muted" id="italic">
@@ -37,12 +53,18 @@ function LoginForm() {
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={passwordText}
+            onChange={handlePasswordTyping}
+            onKeyPress={handleKeyPress}
+          />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-        <Button variant="primary" type="submit">
+        </Form.Group> */}
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
         </Button>
       </Form>
