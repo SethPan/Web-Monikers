@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const port = 3050;
 const cors = require("cors");
 const { Server } = require("socket.io");
-import handleLogin from "backend/routes/handleLogin.js";
+const handleLogin = require("./routes/handleLogin.js");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -149,3 +149,7 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
+
+// app.listen(port, () => {
+//   console.log(`App ExpressAPI listening at http://localhost:${port}`);
+// });

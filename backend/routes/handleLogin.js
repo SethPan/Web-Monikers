@@ -14,10 +14,9 @@ function handleLogin(req, res) {
   client.query(
     "CREATE TABLE IF NOT EXISTS cards (cardName text, description text, points integer, uploaderId integer)"
   );
-  client.query("SELECT * from cards", (err, res) => {
-    console.log("err: \n", err, "\n\n\n\n res: \n", res);
+  client.query("SELECT * from cards", (err, resp) => {
+    console.log("err: \n", err, "\n\n\n\n res: \n", resp);
   });
   client.end();
 }
-
-export default handleLogin;
+exports.handleLogin = handleLogin;
