@@ -6,8 +6,8 @@ const client = new Client({
   connectionString: connectionString,
 });
 
-function handleLogin(req, res) {
-  console.log("hi");
+async function handleLogin(req, res) {
+  console.log("handleLogin running \n\n");
 
   client.connect();
   client.query(
@@ -16,8 +16,9 @@ function handleLogin(req, res) {
   client.query(
     "CREATE TABLE IF NOT EXISTS cards (cardName text, description text, points integer, uploaderId integer)"
   );
-  client.query("SELECT * FROM cards", (err, resp) => {
-    console.log("err: \n", err, "\n\n\n\n res: \n", resp);
+  await client.query("SELECT * FROM cards", (err, resp) => {
+    console.log("\nerr: \n", err, "\n\n res: \n", resp);
   });
+  await client.end();
 }
-exports.handleLogin = handleLogin();
+module.exports = handleLogin;

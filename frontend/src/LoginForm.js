@@ -15,7 +15,8 @@ function LoginForm() {
     setPasswordText(event.target.value);
   }
 
-  function handleSubmit() {
+  function handleSubmit(event) {
+    event.preventDefault();
     const userLoginInput = { email: emailText, password: passwordText };
     axios
       .get("http://localhost:3050/userLogin", userLoginInput)
@@ -30,6 +31,7 @@ function LoginForm() {
 
   function handleKeyPress(event) {
     if (event.charCode === 13) {
+      event.preventDefault();
       handleSubmit();
     }
   }

@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 
+//sends game html
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
