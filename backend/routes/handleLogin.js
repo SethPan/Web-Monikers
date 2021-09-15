@@ -2,23 +2,22 @@ const { Pool, Client } = require("pg");
 
 const connectionString =
   "postgressql://postgres:password@localhost:5432/WebMonikers";
-const client = new Client({
-  connectionString: connectionString,
-});
 
-async function handleLogin(req, res) {
+function handleLogin(req, res) {
+  const client = new Client({
+    connectionString: connectionString,
+  });
   console.log("handleLogin running \n\n");
 
   client.connect();
-  client.query(
-    "CREATE TABLE IF NOT EXISTS users (username text, password text, id integer, email text)"
-  );
-  client.query(
-    "CREATE TABLE IF NOT EXISTS cards (cardName text, description text, points integer, uploaderId integer)"
-  );
-  await client.query("SELECT * FROM cards", (err, resp) => {
-    console.log("\nerr: \n", err, "\n\n res: \n", resp);
+
+  client.query("SELECT * FROM cards", (err, resp) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(resp);
+    }
+    client.end();
   });
-  await client.end();
 }
 module.exports = handleLogin;
