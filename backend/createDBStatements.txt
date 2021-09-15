@@ -1,2 +1,2 @@
 createdb WebMonikers
-\password       //password
+\password       (//password)

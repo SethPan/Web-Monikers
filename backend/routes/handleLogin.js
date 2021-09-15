@@ -7,6 +7,8 @@ const client = new Client({
 });
 
 function handleLogin(req, res) {
+  console.log("hi");
+
   client.connect();
   client.query(
     "CREATE TABLE IF NOT EXISTS users (username text, password text, id integer, email text)"
@@ -14,9 +16,8 @@ function handleLogin(req, res) {
   client.query(
     "CREATE TABLE IF NOT EXISTS cards (cardName text, description text, points integer, uploaderId integer)"
   );
-  client.query("SELECT * from cards", (err, resp) => {
+  client.query("SELECT * FROM cards", (err, resp) => {
     console.log("err: \n", err, "\n\n\n\n res: \n", resp);
   });
-  client.end();
 }
-exports.handleLogin = handleLogin;
+exports.handleLogin = handleLogin();
