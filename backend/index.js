@@ -16,7 +16,8 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/userLogin", (req, res) => {
+app.put("/userLogin", (req, res) => {
+  // console.log("\nbody:\n", req.body);
   handleLogin(req, res);
 });
 

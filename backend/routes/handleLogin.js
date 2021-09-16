@@ -8,10 +8,12 @@ function handleLogin(req, res) {
     connectionString: connectionString,
   });
   console.log("handleLogin running \n\n");
-
   client.connect();
 
-  client.query("SELECT * FROM cards", (err, resp) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  client.query("SELECT * FROM users", (err, resp) => {
     if (err) {
       console.log(err);
     } else {

@@ -19,7 +19,7 @@ function LoginForm() {
     event.preventDefault();
     const userLoginInput = { email: emailText, password: passwordText };
     axios
-      .get("http://localhost:3050/userLogin", userLoginInput)
+      .put("http://localhost:3050/userLogin", userLoginInput)
       .then(function (response) {
         console.log(response);
       })
