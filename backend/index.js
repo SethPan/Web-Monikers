@@ -6,6 +6,8 @@ const port = 3050;
 const cors = require("cors");
 const { Server } = require("socket.io");
 const handleLogin = require("./routes/handleLogin.js");
+const handleNewAccount = require("./routes/handleNewAccount.js");
+const getCards = require("./routes.getCards.js");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -13,12 +15,22 @@ app.use(express.json({ extended: true }));
 
 //sends game html
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/gamePlay.html");
 });
 
 app.put("/userLogin", (req, res) => {
   // console.log("\nbody:\n", req.body);
   handleLogin(req, res);
+});
+
+app.get("/getCards", (req, res) => {
+  getCards(req, res);
+});
+
+app.get("/newAccount", (req, res) => {});
+
+app.get("/newAccountSubmission", (req, res) => {
+  handleNewAccount(req, res);
 });
 
 class cardPool {

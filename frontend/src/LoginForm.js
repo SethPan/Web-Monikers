@@ -36,6 +36,10 @@ function LoginForm() {
     }
   }
 
+  function handleNewAccount(event) {
+    event.preventDefault();
+  }
+
   return (
     <div>
       <Form>
@@ -68,6 +72,9 @@ function LoginForm() {
         </Form.Group> */}
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
+        </Button>
+        <Button variant="secondary" type="submit" onClick={handleNewAccount}>
+          New Account
         </Button>
       </Form>
     </div>

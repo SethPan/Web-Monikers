@@ -2,17 +2,14 @@ const { Pool, Client } = require("pg");
 const connectionString =
   "postgressql://postgres:password@localhost:5432/WebMonikers";
 
-function handleLogin(req, res) {
+function getCards(req, res) {
   const client = new Client({
     connectionString: connectionString,
   });
-  console.log("\nhandleLogin running \n");
   client.connect();
+  console.log("\ngetCards running \n");
 
-  const email = req.body.email;
-  const password = req.body.password;
-
-  client.query("SELECT * FROM users", (err, resp) => {
+  client.query("SELECT * FROM cards", (err, resp) => {
     if (err) {
       console.log(err);
     } else {
@@ -21,4 +18,5 @@ function handleLogin(req, res) {
     client.end();
   });
 }
-module.exports = handleLogin;
+
+module.exports = getCards;
