@@ -22,7 +22,8 @@ function prepDb(req, res) {
     (cardName TEXT, 
       description TEXT, 
       points INTEGER, 
-      uploaderId INTEGER)`
+      uploaderId INTEGER, 
+      cardset TEXT)`
   );
   client.end();
 }

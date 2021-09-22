@@ -7,7 +7,7 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const handleLogin = require("./routes/handleLogin.js");
 const handleNewAccount = require("./routes/handleNewAccount.js");
-const getCards = require("./routes.getCards.js");
+const getCards = require("./routes/getCards.js");
 const prepDb = require("./routes/prepDb.js");
 
 prepDb();
