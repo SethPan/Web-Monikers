@@ -11,10 +11,18 @@ function prepDb(req, res) {
 
   client.connect();
   client.query(
-    "CREATE TABLE IF NOT EXISTS users (username text, password text, id integer, email text)"
+    `CREATE TABLE IF NOT EXISTS users 
+    (username TEXT, 
+      password TEXT, 
+      id INTEGER, 
+      email text)`
   );
   client.query(
-    "CREATE TABLE IF NOT EXISTS cards (cardName text, description text, points integer, uploaderId integer)"
+    `CREATE TABLE IF NOT EXISTS cards 
+    (cardName TEXT, 
+      description TEXT, 
+      points INTEGER, 
+      uploaderId INTEGER)`
   );
   client.end();
 }
