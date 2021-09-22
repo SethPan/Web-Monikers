@@ -2,29 +2,44 @@ const { Pool, Client } = require("pg");
 
 const connectionString =
   "postgressql://postgres:password@localhost:5432/WebMonikers";
-const client = new Client({
-  connectionString: connectionString,
-});
 
-function prepDb(req, res) {
+function prepDb() {
+  const client = new Client({
+    connectionString: connectionString,
+  });
+  client.connect();
   console.log("\nprepDb running\n");
 
-  client.connect();
   client.query(
     `CREATE TABLE IF NOT EXISTS users 
     (username TEXT, 
       password TEXT, 
       id INTEGER, 
-      email text)`
+      email text)`,
+    (err, resp) => {
+      if (err) {
+        console.log("\n\nerror:", err);
+      } else {
+        console.log(resp);
+      }
+    }
   );
+
   client.query(
     `CREATE TABLE IF NOT EXISTS cards 
     (cardName TEXT, 
       description TEXT, 
       points INTEGER, 
       uploaderId INTEGER, 
-      cardset TEXT)`
+      cardset TEXT)`,
+    (err, resp) => {
+      if (err) {
+        console.log("\n\nerror:", err);
+      } else {
+        console.log(resp);
+      }
+      client.end();
+    }
   );
-  client.end();
 }
 module.exports = prepDb;
