@@ -9,7 +9,9 @@ function getCards(req, res) {
   client.connect();
   console.log("\ngetCards running \n");
 
-  client.query("SELECT * FROM cards", (err, resp) => {
+  const cardSet = req.body.cardSet;
+
+  const cards = client.query(`SELECT ${cardSet} FROM cards`, (err, resp) => {
     if (err) {
       console.log(err);
     } else {
@@ -17,6 +19,8 @@ function getCards(req, res) {
     }
     client.end();
   });
+
+  return cards;
 }
 
 module.exports = getCards;

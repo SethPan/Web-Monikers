@@ -26,11 +26,12 @@ app.put("/userLogin", (req, res) => {
   handleLogin(req, res);
 });
 
-app.get("/getCards", (req, res) => {
-  getCards(req, res);
+app.put("/getCards", (req, res) => {
+  const cards = getCards(req, res);
+  res.send(cards);
 });
 
-app.get("/newAccount", (req, res) => {});
+app.put("/newAccount", (req, res) => {});
 
 app.get("/newAccountSubmission", (req, res) => {
   handleNewAccount(req, res);
