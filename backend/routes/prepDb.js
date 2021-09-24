@@ -15,12 +15,12 @@ function prepDb() {
     (username TEXT, 
       password TEXT, 
       id INTEGER, 
-      email text)`,
+      email TEXT)`,
     (err, resp) => {
       if (err) {
         console.log("\n\n", err);
       } else {
-        console.log(resp);
+        //cdconsole.log(resp);
       }
     }
   );
@@ -36,7 +36,7 @@ function prepDb() {
       if (err) {
         console.log("\n\n", err);
       } else {
-        console.log(resp);
+        //console.log(resp);
       }
       client.end();
     }
