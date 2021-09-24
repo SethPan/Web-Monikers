@@ -12,26 +12,35 @@ function prepDb() {
 
   client.query(
     `CREATE TABLE IF NOT EXISTS users 
-    (username TEXT, 
-      password TEXT, 
-      id INTEGER, 
-      email TEXT)`,
+    (username TEXT DEFAULT null, 
+      password TEXT DEFAULT null, 
+      id INTEGER DEFAULT null, 
+      email TEXT DEFAULT null)`,
     (err, resp) => {
       if (err) {
         console.log("\n\n", err);
       } else {
-        //cdconsole.log(resp);
+        //console.log(resp);
       }
     }
   );
 
+  // //test
+  // client.query(`SELECT password FROM users`, (err, resp) => {
+  //   if (err) {
+  //     console.log("\n\n", err);
+  //   } else {
+  //     console.log(resp);
+  //   }
+  // });
+
   client.query(
     `CREATE TABLE IF NOT EXISTS cards 
-    (cardName TEXT, 
-      description TEXT, 
-      points INTEGER, 
-      uploaderId INTEGER, 
-      cardset TEXT)`,
+    (cardName TEXT DEFAULT null, 
+      description TEXT DEFAULT null, 
+      points INTEGER DEFAULT null, 
+      uploaderId INTEGER DEFAULT null, 
+      cardset TEXT DEFAULT null)`,
     (err, resp) => {
       if (err) {
         console.log("\n\n", err);

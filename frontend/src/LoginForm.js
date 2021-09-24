@@ -3,7 +3,8 @@ import Button from "react-bootstrap/Button";
 import { useState } from "react";
 import axios from "axios";
 
-function LoginForm() {
+function LoginForm(props) {
+  // console.log(props);
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
 

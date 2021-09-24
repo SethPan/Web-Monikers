@@ -12,7 +12,12 @@ function handleLogin(req, res) {
   const email = req.body.email;
   const password = req.body.password;
 
-  client.query("SELECT * FROM users", (err, resp) => {
+  //HERE HAVE AUTHENTIFICATION OF INPUTS
+
+  //may be incorrect statement syntax for now
+  const query = "SELECT password FROM users WHERE email = VALUE";
+  const value = [email];
+  client.query(query, value, (err, resp) => {
     if (err) {
       console.log(err);
     } else {
