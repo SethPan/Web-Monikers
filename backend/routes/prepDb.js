@@ -18,7 +18,7 @@ function prepDb() {
       email text)`,
     (err, resp) => {
       if (err) {
-        console.log("\n\nerror:", err);
+        console.log("\n\n", err);
       } else {
         console.log(resp);
       }
@@ -34,7 +34,7 @@ function prepDb() {
       cardset TEXT)`,
     (err, resp) => {
       if (err) {
-        console.log("\n\nerror:", err);
+        console.log("\n\n", err);
       } else {
         console.log(resp);
       }
