@@ -40,25 +40,30 @@ function prepDb() {
     }
   );
 
-  //test
-  client.query(`SELECT * FROM users`, (err, resp) => {
-    if (err) {
-      console.log("\n\n", err);
-    } else {
-      console.log(resp);
-    }
-  });
-
+  //test to be used as password check
   client.query(
-    `INSERT INTO users(username, password, id, email) VALUES ('Seth', 'password', 1, 'stpanousis@comcast.net')`,
+    `SELECT password FROM users
+  WHERE email = 'stpanousis@comcast.net'`,
     (err, resp) => {
       if (err) {
-        console.log("\ninsert into users error\n", err);
+        console.log("\n\n", err);
       } else {
-        console.log(resp);
+        console.log(resp.rows[0].password);
       }
     }
   );
+
+  // //use to manually add columns easily in testing
+  // client.query(
+  //   `INSERT INTO users(username, password, id, email) VALUES ('Seth', 'password', 1, 'stpanousis@comcast.net')`,
+  //   (err, resp) => {
+  //     if (err) {
+  //       console.log("\ninsert into users error\n", err);
+  //     } else {
+  //       console.log(resp);
+  //     }
+  //   }
+  // );
 
   client.query(
     `CREATE TABLE IF NOT EXISTS cards
