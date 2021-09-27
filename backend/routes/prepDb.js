@@ -46,7 +46,7 @@ function prepDb() {
   WHERE email = 'stpanousis@comcast.net'`,
     (err, resp) => {
       if (err) {
-        console.log("\n\n", err);
+        console.log("\nselect password from users where... error\n", err);
       } else {
         console.log(resp.rows[0].password);
       }

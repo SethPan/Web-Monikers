@@ -12,17 +12,19 @@ function handleLogin(req, res) {
   const email = req.body.email;
   const password = req.body.password;
 
-  //HERE HAVE AUTHENTIFICATION OF INPUTS
+  //HERE HAVE AUTHENTICATION OF INPUTS
 
-  //may be incorrect statement syntax for now
-  const query = `SELECT password FROM users WHERE email = ${email}`;
-  client.query(query, (err, resp) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(resp);
+  client.query(
+    `SELECT password FROM users
+  WHERE email = ${email}`,
+    (err, resp) => {
+      if (err) {
+        console.log("\nhandle login error\n", err);
+      } else {
+        if (resp.rows[0].password === password) {
+
+        }
+      }
     }
-    client.end();
-  });
-}
+  );
 module.exports = handleLogin;
