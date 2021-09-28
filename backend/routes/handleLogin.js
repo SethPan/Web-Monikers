@@ -1,3 +1,6 @@
+const passport = require('passport')
+//select strategy 
+
 const { Pool, Client } = require("pg");
 const connectionString =
   "postgressql://postgres:password@localhost:5432/WebMonikers";
