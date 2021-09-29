@@ -9,6 +9,7 @@ const handleLogin = require("./routes/handleLogin.js");
 const handleNewAccount = require("./routes/handleNewAccount.js");
 const getCards = require("./routes/getCards.js");
 const prepDb = require("./routes/prepDb.js");
+const handleGoogleOAuth = require("./routes/handleGoogleOAuth.js");
 
 prepDb();
 
@@ -19,6 +20,10 @@ app.use(express.json({ extended: true }));
 //sends game html
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
+});
+
+app.put("/googleOAuth", (req, res) => {
+  handleGoogleOAuth(req, res);
 });
 
 app.put("/userLogin", (req, res) => {

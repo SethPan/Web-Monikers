@@ -1,6 +1,3 @@
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth").OAuthStrategy;
-
 const { Pool, Client } = require("pg");
 const connectionString =
   "postgressql://postgres:password@localhost:5432/WebMonikers";
@@ -28,21 +25,6 @@ function handleLogin(req, res) {
         }
       }
     }
-  );
-
-  passport.use(
-    new GoogleStrategy(
-      {
-        consumerKey: GOOGLE_CONSUMER_KEY,
-        consumerSecret: GOOGLE_CONSUMER_SECRET,
-        callbackURL: "http://www.example.com/auth/google/callback",
-      },
-      function (token, tokenSecret, profile, done) {
-        User.findOrCreate({ googleId: profile.id }, function (err, user) {
-          return done(err, user);
-        });
-      }
-    )
   );
 }
 module.exports = handleLogin;
