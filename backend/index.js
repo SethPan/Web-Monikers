@@ -22,9 +22,18 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
 });
 
-app.put("/googleOAuth", (req, res) => {
+app.get("/auth/google", (req, res) => {
   handleGoogleOAuth(req, res);
 });
+
+// the login route below is not implimented yet
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    res.redirect("/");
+  }
+);
 
 app.put("/userLogin", (req, res) => {
   // console.log("\nbody:\n", req.body);
