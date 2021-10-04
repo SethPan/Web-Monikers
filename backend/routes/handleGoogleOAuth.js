@@ -1,6 +1,9 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuthStrategy;
 
+const GOOGLE_CONSUMER_KEY = process.env.GOOGLE_CONSUMER_KEY;
+const GOOGLE_CONSUMER_SECRET = process.env.GOOGLE_CONSUMER_SECRET;
+
 function handleGoogleOAuth(req, res) {
   passport.use(
     new GoogleStrategy(

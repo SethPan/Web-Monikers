@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
 });
 
+//must make client side button
 app.get("/auth/google", (req, res) => {
   handleGoogleOAuth(req, res);
 });
