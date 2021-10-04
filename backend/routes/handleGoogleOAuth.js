@@ -14,6 +14,8 @@ function handleGoogleOAuth(req, res) {
       },
       function (token, tokenSecret, profile, done) {
         User.findOrCreate({ googleId: profile.id }, function (err, user) {
+          console.log("\nerr:\n", err);
+          console.log("\nuser:\n", user);
           return done(err, user);
         });
       }

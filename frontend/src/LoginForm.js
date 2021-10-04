@@ -41,6 +41,19 @@ function LoginForm(props) {
     event.preventDefault();
   }
 
+  function handleGoogleOAuth(event) {
+    event.preventDefault();
+    axios
+      .get("http://localhost:3050/auth/google")
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {});
+  }
+
   return (
     <div>
       <Form>
@@ -78,6 +91,11 @@ function LoginForm(props) {
           New Account
         </Button>
       </Form>
+      <div className="mb-2">
+        <Button variant="primary" size="lg" onClick={handleGoogleOAuth}>
+          Login With Google
+        </Button>{" "}
+      </div>
     </div>
   );
 }
