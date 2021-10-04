@@ -12,6 +12,9 @@ const getCards = require("./routes/getCards.js");
 const prepDb = require("./routes/prepDb.js");
 const handleGoogleOAuth = require("./routes/handleGoogleOAuth.js");
 
+const { OAuth2Client } = require("google-auth-library");
+const OAuth2client = new OAuth2Client(process.env.CLIENT_ID);
+
 prepDb();
 
 app.use(cors());
@@ -23,9 +26,20 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
 });
 
-//must make client side button
-app.get("/auth/google", (req, res) => {
-  handleGoogleOAuth(req, res);
+app.post("/api/v1/auth/google", async (req, res) => {
+  const { token } = req.body;
+  const ticket = await OAuth2client.verifyIdToken({
+    idToken: token,
+    audience: process.env.CLIENT_ID,
+  });
+  const { name, email, picture } = ticket.getPayload();
+  const user = await db.user.upsert({
+    where: { email: email },
+    update: { name, picture },
+    create: { name, email, picture },
+  });
+  res.status(201);
+  res.json(user);
 });
 
 // the login route below is not implimented yet

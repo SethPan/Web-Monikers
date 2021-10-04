@@ -2,6 +2,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
 import axios from "axios";
+import { GoogleLogin } from "react-google-login";
 
 function LoginForm(props) {
   // console.log(props);
@@ -41,17 +42,31 @@ function LoginForm(props) {
     event.preventDefault();
   }
 
-  function handleGoogleOAuth(event) {
-    event.preventDefault();
-    axios
-      .get("http://localhost:3050/auth/google")
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {});
+  // function handleGoogleOAuth(event) {
+  //   event.preventDefault();
+  //   axios
+  //     .get("http://localhost:3050/auth/google")
+  //     .then(function (response) {
+  //       console.log(response);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     })
+  //     .then(function () {});
+  // }
+
+  async function handleGoogleOAuth(googleData) {
+    const res = await fetch("http://localhost:3050/auth/google", {
+      method: "POST",
+      body: JSON.stringify({
+        token: googleData.tokenId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    // store returned user somehow
   }
 
   return (
@@ -91,11 +106,13 @@ function LoginForm(props) {
           New Account
         </Button>
       </Form>
-      <div className="mb-2">
-        <Button variant="primary" size="lg" onClick={handleGoogleOAuth}>
-          Login With Google
-        </Button>{" "}
-      </div>
+      <GoogleLogin
+        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+        buttonText="Log in with Google"
+        onSuccess={handleGoogleOAuth}
+        onFailure={handleGoogleOAuth}
+        cookiePolicy={"single_host_origin"}
+      />
     </div>
   );
 }

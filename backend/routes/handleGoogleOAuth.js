@@ -1,18 +1,18 @@
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth").OAuthStrategy;
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
-const GOOGLE_CONSUMER_KEY = process.env.GOOGLE_CONSUMER_KEY;
-const GOOGLE_CONSUMER_SECRET = process.env.GOOGLE_CONSUMER_SECRET;
+const token = process.env.GOOGLE_CONSUMER_KEY;
+const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
 
 function handleGoogleOAuth(req, res) {
   passport.use(
     new GoogleStrategy(
       {
-        consumerKey: GOOGLE_CONSUMER_KEY,
-        consumerSecret: GOOGLE_CONSUMER_SECRET,
+        clientID: token,
+        clientSecret: tokenSecret,
         callbackURL: "/auth/google/callback",
       },
-      function (token, tokenSecret, profile, done) {
+      function (accessToken, refreshToken, profile, done) {
         User.findOrCreate({ googleId: profile.id }, function (err, user) {
           console.log("\nerr:\n", err);
           console.log("\nuser:\n", user);
@@ -22,5 +22,4 @@ function handleGoogleOAuth(req, res) {
     )
   );
 }
-
 module.exports = handleGoogleOAuth;
