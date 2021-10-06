@@ -1,5 +1,7 @@
+import {} from "dotenv/config";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
@@ -69,6 +71,9 @@ function LoginForm(props) {
     // store returned user somehow
   }
 
+  const googleClientID = process.env.GOOGLE_CONSUMER_KEY;
+  console.log("clientID:", googleClientID);
+
   return (
     <div>
       <Form>
@@ -106,13 +111,16 @@ function LoginForm(props) {
           New Account
         </Button>
       </Form>
-      <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        buttonText="Log in with Google"
-        onSuccess={handleGoogleOAuth}
-        onFailure={handleGoogleOAuth}
-        cookiePolicy={"single_host_origin"}
-      />
+      <div>
+        {/* how the fuck does this work, why is it not clickable */}
+        <GoogleLogin
+          clientId={process.env.GOOGLE_CONSUMER_KEY}
+          buttonText="Log in with Google"
+          onSuccess={handleGoogleOAuth}
+          onFailure={handleGoogleOAuth}
+          cookiePolicy={"single_host_origin"}
+        />
+      </div>
     </div>
   );
 }

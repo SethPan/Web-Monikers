@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const passport = require("passport");
 const app = express();
@@ -30,7 +31,7 @@ app.post("/api/v1/auth/google", async (req, res) => {
   const { token } = req.body;
   const ticket = await OAuth2client.verifyIdToken({
     idToken: token,
-    audience: process.env.CLIENT_ID,
+    audience: process.env.GOOGLE_CONSUMER_KEY,
   });
   const { name, email, picture } = ticket.getPayload();
   const user = await db.user.upsert({
@@ -39,6 +40,8 @@ app.post("/api/v1/auth/google", async (req, res) => {
     create: { name, email, picture },
   });
   res.status(201);
+
+  //this returns user as json, may not be ideal here
   res.json(user);
 });
 
