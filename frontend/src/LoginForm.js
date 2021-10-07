@@ -1,4 +1,3 @@
-import {} from "dotenv/config";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import React from "react";
@@ -58,7 +57,7 @@ function LoginForm(props) {
   // }
 
   async function handleGoogleOAuth(googleData) {
-    const res = await fetch("http://localhost:3050/auth/google", {
+    const res = await fetch("http://localhost:3050/api/v1/auth/google", {
       method: "POST",
       body: JSON.stringify({
         token: googleData.tokenId,
@@ -70,9 +69,6 @@ function LoginForm(props) {
     const data = await res.json();
     // store returned user somehow
   }
-
-  const googleClientID = process.env.GOOGLE_CONSUMER_KEY;
-  console.log("clientID:", googleClientID);
 
   return (
     <div>
@@ -112,9 +108,10 @@ function LoginForm(props) {
         </Button>
       </Form>
       <div>
-        {/* how the fuck does this work, why is it not clickable */}
         <GoogleLogin
-          clientId={process.env.GOOGLE_CONSUMER_KEY}
+          clientId={
+            "146853270229-8oodlv1taugs81v7d9eshc5d14v4gqs9.apps.googleusercontent.com"
+          }
           buttonText="Log in with Google"
           onSuccess={handleGoogleOAuth}
           onFailure={handleGoogleOAuth}

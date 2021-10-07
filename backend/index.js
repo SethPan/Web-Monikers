@@ -14,7 +14,7 @@ const prepDb = require("./routes/prepDb.js");
 const handleGoogleOAuth = require("./routes/handleGoogleOAuth.js");
 
 const { OAuth2Client } = require("google-auth-library");
-const OAuth2client = new OAuth2Client(process.env.CLIENT_ID);
+const OAuth2client = new OAuth2Client(process.env.GOOGLE_CONSUMER_KEY);
 
 prepDb();
 
@@ -29,20 +29,23 @@ app.get("/", (req, res) => {
 
 app.post("/api/v1/auth/google", async (req, res) => {
   const { token } = req.body;
+
   const ticket = await OAuth2client.verifyIdToken({
     idToken: token,
     audience: process.env.GOOGLE_CONSUMER_KEY,
   });
   const { name, email, picture } = ticket.getPayload();
-  const user = await db.user.upsert({
-    where: { email: email },
-    update: { name, picture },
-    create: { name, email, picture },
-  });
+
+  // const user = await db.user.upsert({
+  //   where: { email: email },
+  //   update: { name, picture },
+  //   create: { name, email, picture },
+  // });
+
   res.status(201);
 
-  //this returns user as json, may not be ideal here
-  res.json(user);
+  // //this returns user as json, may not be ideal here
+  // res.json(user);
 });
 
 // the login route below is not implimented yet
