@@ -28,24 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/v1/auth/google", async (req, res) => {
-  const { token } = req.body;
-
-  const ticket = await OAuth2client.verifyIdToken({
-    idToken: token,
-    audience: process.env.GOOGLE_CONSUMER_KEY,
-  });
-  const { name, email, picture } = ticket.getPayload();
-
-  // const user = await db.user.upsert({
-  //   where: { email: email },
-  //   update: { name, picture },
-  //   create: { name, email, picture },
-  // });
-
-  res.status(201);
-
-  // //this returns user as json, may not be ideal here
-  // res.json(user);
+  handleGoogleOAuth(req, res);
 });
 
 // the login route below is not implimented yet

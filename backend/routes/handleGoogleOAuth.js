@@ -5,6 +5,8 @@ const token = process.env.GOOGLE_CONSUMER_KEY;
 const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
 
 function handleGoogleOAuth(req, res) {
+  console.log("handle google oauth running");
+  console.log(req.body);
   passport.use(
     new GoogleStrategy(
       {
