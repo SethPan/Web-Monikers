@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
 });
 
-app.post("/api/v1/auth/google", async (req, res) => {
+app.post("/auth/google", (req, res) => {
   handleGoogleOAuth(req, res);
 });
 

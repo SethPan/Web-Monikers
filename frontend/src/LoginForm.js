@@ -43,31 +43,17 @@ function LoginForm(props) {
     event.preventDefault();
   }
 
-  // function handleGoogleOAuth(event) {
-  //   event.preventDefault();
-  //   axios
-  //     .get("http://localhost:3050/auth/google")
-  //     .then(function (response) {
-  //       console.log(response);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     })
-  //     .then(function () {});
-  // }
-
-  async function handleGoogleOAuth(googleData) {
-    const res = await fetch("http://localhost:3050/api/v1/auth/google", {
-      method: "POST",
-      body: JSON.stringify({
-        token: googleData.tokenId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-    // store returned user somehow
+  function handleGoogleOAuth(event) {
+    event.preventDefault();
+    axios
+      .get("http://localhost:3050/auth/google")
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {});
   }
 
   return (
@@ -107,19 +93,14 @@ function LoginForm(props) {
           New Account
         </Button>
       </Form>
-      <div>
-        <GoogleLogin
-          clientId={
-            "146853270229-8oodlv1taugs81v7d9eshc5d14v4gqs9.apps.googleusercontent.com"
-          }
-          buttonText="Log in with Google"
-          onSuccess={handleGoogleOAuth}
-          onFailure={handleGoogleOAuth}
-          cookiePolicy={"single_host_origin"}
-        />
+
+      <div className="mb-2">
+    <Button variant="primary" size="lg" onClick={handleGoogleOAuth}>
+    Log in with Google
+    </Button>{' '}
       </div>
-    </div>
   );
 }
 
 export default LoginForm;
+
