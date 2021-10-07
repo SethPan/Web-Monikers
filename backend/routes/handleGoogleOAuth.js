@@ -13,6 +13,7 @@ function handleGoogleOAuth(req, res) {
         clientID: token,
         clientSecret: tokenSecret,
         callbackURL: "/auth/google/callback",
+        passReqToCallback: true,
       },
       function (accessToken, refreshToken, profile, done) {
         User.findOrCreate({ googleId: profile.id }, function (err, user) {

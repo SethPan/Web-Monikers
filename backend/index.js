@@ -1,6 +1,5 @@
 require("dotenv").config();
 const express = require("express");
-const passport = require("passport");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
@@ -27,9 +26,31 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
 });
 
-app.post("/auth/google", (req, res) => {
-  handleGoogleOAuth(req, res);
-});
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const token = process.env.GOOGLE_CONSUMER_KEY;
+const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: token,
+      clientSecret: tokenSecret,
+      callbackURL: "/auth/google/callback",
+      passReqToCallback: true,
+    },
+    function (accessToken, refreshToken, profile, done) {
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        console.log("\nerr:\n", err);
+        console.log("\nuser:\n", user);
+        return done(err, user);
+      });
+    }
+  )
+);
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
 
 // the login route below is not implimented yet
 app.get(

@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { GoogleLogin } from "react-google-login";
 
 function LoginForm(props) {
   // console.log(props);
@@ -95,12 +94,12 @@ function LoginForm(props) {
       </Form>
 
       <div className="mb-2">
-    <Button variant="primary" size="lg" onClick={handleGoogleOAuth}>
-    Log in with Google
-    </Button>{' '}
+        <Button variant="primary" size="lg" onClick={handleGoogleOAuth}>
+          Log in with Google
+        </Button>{" "}
       </div>
+    </div>
   );
 }
 
 export default LoginForm;
-
