@@ -44,15 +44,17 @@ function LoginForm(props) {
 
   function handleGoogleOAuth(event) {
     event.preventDefault();
-    axios
-      .get("http://localhost:3050/auth/google")
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {});
+
+    // //temporarily disabled
+    // axios
+    //   .get("http://localhost:3050/auth/google")
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   })
+    //   .then(function () {});
   }
 
   return (

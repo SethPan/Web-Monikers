@@ -6,6 +6,7 @@ const server = http.createServer(app);
 const port = 3050;
 const cors = require("cors");
 const { Server } = require("socket.io");
+
 const handleLogin = require("./routes/handleLogin.js");
 const handleNewAccount = require("./routes/handleNewAccount.js");
 const getCards = require("./routes/getCards.js");
@@ -30,32 +31,35 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const token = process.env.GOOGLE_CONSUMER_KEY;
 const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: token,
-      clientSecret: tokenSecret,
-      callbackURL: "/auth/google/callback",
-      passReqToCallback: true,
-    },
-    function (accessToken, refreshToken, profile, done) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        console.log("\nerr:\n", err);
-        console.log("\nuser:\n", user);
-        return done(err, user);
-      });
-    }
-  )
-);
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["email", "profile"] })
-);
 
-// the login route below is not implimented yet
+app.get("/auth/google", (req, res) => {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: token,
+        clientSecret: tokenSecret,
+        callbackURL: "/auth/google/callback",
+        passReqToCallback: true,
+      },
+      function (accessToken, refreshToken, profile, done) {
+        User.findOrCreate({ googleId: profile.id }, function (err, user) {
+          console.log("\nerr:\n", err);
+          console.log("\nuser:\n", user);
+          return done(err, user);
+        });
+      }
+    )
+  );
+  passport.authenticate("google", { scope: ["email", "profile"] });
+});
+
+// the failure route below is not implimented yet
 app.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => {
+    console.log("callback running");
+    passport.authenticate("google", { failureRedirect: "/" });
+  },
   function (req, res) {
     res.redirect("/");
   }
