@@ -17,9 +17,10 @@ function LoginForm(props) {
     setPasswordText(event.target.value);
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit() {
     const userLoginInput = { email: emailText, password: passwordText };
+    console.log(userLoginInput);
+
     axios
       .put("http://localhost:3050/userLogin", userLoginInput)
       .then(function (response) {
@@ -36,6 +37,11 @@ function LoginForm(props) {
       event.preventDefault();
       handleSubmit();
     }
+  }
+
+  function submitButton(event) {
+    event.preventDefault();
+    handleSubmit();
   }
 
   function handleNewAccount(event) {
@@ -87,7 +93,7 @@ function LoginForm(props) {
         {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
         </Form.Group> */}
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
+        <Button variant="primary" type="submit" onClick={submitButton}>
           Submit
         </Button>
         <Button variant="secondary" type="submit" onClick={handleNewAccount}>
