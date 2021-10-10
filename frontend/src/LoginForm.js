@@ -22,7 +22,7 @@ function LoginForm(props) {
     console.log(userLoginInput);
 
     axios
-      .put("http://localhost:3050/userLogin", userLoginInput)
+      .post("http://localhost:3050/login", userLoginInput)
       .then(function (response) {
         console.log(response);
       })

@@ -21,7 +21,7 @@ const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const passportLocal = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
-const expressSession = require("express-session");
+const session = require("express-session");
 const bodyParser = require("body-parser");
 
 //Oauth packages
@@ -35,17 +35,42 @@ const OAuth2client = new OAuth2Client(token);
 prepDb();
 
 //basic cors setup
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // <-- location of react app
+    credentials: true,
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 // //alternative (might use)
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
-//sends game html
+//more middleware
+app.use(
+  session({
+    secret: "secretcode",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(cookieParser("secretcode"));
+
+//routes
+
+app.post("/login", (req, res) => {
+  console.log("\nbody:", req.body);
+  handleLogin(req, res);
+});
+app.post("/register", (req, res) => {
+  console.log("\nbody:", req.body);
+});
+app.get("/user", (req, res) => {});
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
-});
+}); // <-- sends card game html
 
 app.get("/auth/google", (req, res) => {
   passport.use(
@@ -79,11 +104,6 @@ app.get(
     res.redirect("/");
   }
 );
-
-app.put("/userLogin", (req, res) => {
-  // console.log("\nbody:\n", req.body);
-  handleLogin(req, res);
-});
 
 app.put("/newAccount", (req, res) => {});
 
@@ -226,7 +246,3 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
-
-// app.listen(port, () => {
-//   console.log(`App ExpressAPI listening at http://localhost:${port}`);
-// });
