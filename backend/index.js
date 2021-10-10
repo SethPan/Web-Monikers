@@ -1,3 +1,4 @@
+//basic server packages
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -7,30 +8,44 @@ const port = 3050;
 const cors = require("cors");
 const { Server } = require("socket.io");
 
+//routes
 const handleLogin = require("./routes/handleLogin.js");
 const handleNewAccount = require("./routes/handleNewAccount.js");
 const getCards = require("./routes/getCards.js");
 const prepDb = require("./routes/prepDb.js");
 const handleGoogleOAuth = require("./routes/handleGoogleOAuth.js");
 
-const { OAuth2Client } = require("google-auth-library");
-const OAuth2client = new OAuth2Client(process.env.GOOGLE_CONSUMER_KEY);
+//authentication packages
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const passportLocal = require("passport-local").Strategy;
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcryptjs");
+const expressSession = require("express-session");
+const bodyParser = require("body-parser");
 
+//Oauth packages
+const token = process.env.GOOGLE_CONSUMER_KEY;
+const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
+const { OAuth2Client } = require("google-auth-library");
+const bodyParser = require("body-parser");
+const OAuth2client = new OAuth2Client(token);
+
+//this to test and prepare dB
 prepDb();
 
+//basic cors setup
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
+// //alternative (might use)
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 //sends game html
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
 });
-
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
-const token = process.env.GOOGLE_CONSUMER_KEY;
-const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
 
 app.get("/auth/google", (req, res) => {
   passport.use(
@@ -70,15 +85,15 @@ app.put("/userLogin", (req, res) => {
   handleLogin(req, res);
 });
 
-app.put("/getCards", (req, res) => {
-  const cards = getCards(req, res);
-  res.send(cards);
-});
-
 app.put("/newAccount", (req, res) => {});
 
 app.get("/newAccountSubmission", (req, res) => {
   handleNewAccount(req, res);
+});
+
+app.put("/getCards", (req, res) => {
+  const cards = getCards(req, res);
+  res.send(cards);
 });
 
 class cardPool {

@@ -24,7 +24,7 @@ function handleLogin(req, res) {
         console.log("\nhandle login error\n", err);
       } else {
         if (resp.rows[0].password === password) {
-          console.log("query passed");
+          //console.log("query passed");
         }
       }
     }
