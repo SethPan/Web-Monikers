@@ -12,14 +12,13 @@ function handleLogin(req, res) {
   const email = req.body.email;
   const password = req.body.password;
   console.log(email, "\n", password);
+  console.log(typeof email);
 
   //HERE HAVE AUTHENTICATION OF INPUTS
 
-  //this query searches for the part of the email leading up to the @ symbol
-  //but nothing after the @ symbol. read docs on querying emails
   client.query(
     `SELECT password FROM users
-  WHERE email = ${email}`,
+  WHERE email = lower('${email}')`,
     (err, resp) => {
       if (err) {
         console.log("\nhandle login error\n", err);
