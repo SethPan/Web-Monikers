@@ -3,11 +3,17 @@ import Button from "react-bootstrap/Button";
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import NewUser from "./NewUser.js";
 
 function LoginForm(props) {
   // console.log(props);
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
+  const [newUser, setNewUser] = useState(false);
+
+  //to replace login jsx with NewUser component
+  if (newUser) {
+  }
 
   function handleEmailTyping(event) {
     setEmailText(event.target.value);
@@ -45,6 +51,7 @@ function LoginForm(props) {
 
   function handleNewAccount(event) {
     event.preventDefault();
+    setNewUser(true);
   }
 
   function handleGoogleOAuth(event) {
