@@ -28,7 +28,6 @@ const bodyParser = require("body-parser");
 const token = process.env.GOOGLE_CONSUMER_KEY;
 const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
 const { OAuth2Client } = require("google-auth-library");
-const bodyParser = require("body-parser");
 const OAuth2client = new OAuth2Client(token);
 
 //this to test and prepare dB

@@ -4,8 +4,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 
-function LoginForm(props) {
-  // console.log(props);
+function NewUser(props) {
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
 
@@ -15,20 +14,6 @@ function LoginForm(props) {
 
   function handlePasswordTyping(event) {
     setPasswordText(event.target.value);
-  }
-
-  function handleSubmit() {
-    const userLoginInput = { email: emailText, password: passwordText };
-    // console.log(userLoginInput);
-    axios
-      .post("http://localhost:3050/login", userLoginInput)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {});
   }
 
   function handleKeyPress(event) {
@@ -43,23 +28,20 @@ function LoginForm(props) {
     handleSubmit();
   }
 
-  function handleNewAccount(event) {
-    event.preventDefault();
-  }
+  function handleSubmit() {
+    const userInput = { email: emailText, password: passwordText };
+    // console.log(userInput);
 
-  function handleGoogleOAuth(event) {
-    event.preventDefault();
-
-    // //temporarily disabled
-    // axios
-    //   .get("http://localhost:3050/auth/google")
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   })
-    //   .then(function () {});
+    // put address to api handle new user submission below
+    axios
+      .post("", userInput)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {});
   }
 
   return (
@@ -74,7 +56,9 @@ function LoginForm(props) {
             onChange={handleEmailTyping}
             onKeyPress={handleKeyPress}
           />
-          <Form.Text className="text-muted" id="italic"></Form.Text>
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -87,24 +71,13 @@ function LoginForm(props) {
             onKeyPress={handleKeyPress}
           />
         </Form.Group>
-        {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group> */}
+
         <Button variant="primary" type="submit" onClick={submitButton}>
           Submit
         </Button>
-        <Button variant="secondary" type="submit" onClick={handleNewAccount}>
-          New Account
-        </Button>
       </Form>
-
-      <div className="mb-2">
-        <Button variant="primary" size="lg" onClick={handleGoogleOAuth}>
-          Log in with Google
-        </Button>{" "}
-      </div>
     </div>
   );
 }
 
-export default LoginForm;
+export default NewUser;
