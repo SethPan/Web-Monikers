@@ -3,17 +3,14 @@ import Button from "react-bootstrap/Button";
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import NewUser from "./NewUser.js";
 
 function LoginForm(props) {
-  //state
-  const [emailText, setEmailText] = useState("");
-  const [passwordText, setPasswordText] = useState("");
-  const [newUser, setNewUser] = useState(false);
+console.log(props.textState)
 
-  //to replace login jsx with NewUser component
-  if (newUser) { currentComponent = NewUser
-  }
+  //state
+  let {emailText, setEmailText, passwordText, setPasswordText} = props
+  const setNewUser = props.setNewUser
+
 
   //handle text state
   function handleEmailTyping(event) {
@@ -67,8 +64,8 @@ function LoginForm(props) {
     //   .then(function () {});
   }
 
-  // default component for login screen
-  const defaultLogin = <div>
+  return (
+    <div>
   <Form>
     <Form.Group className="mb-3" controlId="formBasicEmail">
       <Form.Label>Email address</Form.Label>
@@ -108,12 +105,7 @@ function LoginForm(props) {
       Log in with Google
     </Button>{" "}
   </div>
-</div>;
-
-let currentComponent = defaultLogin
-
-  return (
-    defaultLogin
+</div>
   );
 }
 

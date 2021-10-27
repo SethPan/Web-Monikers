@@ -5,8 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 
 function NewUser(props) {
-  const [emailText, setEmailText] = useState("");
-  const [passwordText, setPasswordText] = useState("");
+  let {emailText, setEmailText, passwordText, setPasswordText} = props
 
   function handleEmailTyping(event) {
     setEmailText(event.target.value);
