@@ -5,11 +5,10 @@ import { useState } from "react";
 import axios from "axios";
 
 function LoginForm(props) {
-console.log(props.textState)
 
   //state
   let {emailText, setEmailText, passwordText, setPasswordText} = props
-  const setNewUser = props.setNewUser
+  const setNewPage = props.setNewPage
 
 
   //handle text state
@@ -46,7 +45,7 @@ console.log(props.textState)
   }
   function handleNewAccount(event) {
     event.preventDefault();
-    setNewUser(true);
+    setNewPage("newUser");
   }
 
   //to possibly impliment later
