@@ -45,6 +45,7 @@ function NewUser(props) {
 
   return (
     <div>
+      <div id="title">New User</div>
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
