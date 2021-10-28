@@ -20,3 +20,8 @@ code {
   font-size: 25px;
   text-decoration: underline;
 }
+
+#emailAlert {
+font-style: italic;
+color: #E78587
+}
