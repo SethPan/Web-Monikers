@@ -20,17 +20,15 @@ function LoginForm(props) {
   }
 
   function handleSubmit() {
-    const userLoginInput = { email: emailText, password: passwordText };
-    // console.log(userLoginInput);
-    axios
-      .post("http://localhost:3050/login", userLoginInput)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {});
+    axios({
+      method: "POST",
+      data: {
+        email: emailText,
+        password: passwordText,
+      },
+      withCredentials: true,
+      url: "http://localhost:3050/login",
+    });
   }
 
   function handleKeyPress(event) {

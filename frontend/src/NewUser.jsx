@@ -5,12 +5,21 @@ import { useState } from "react";
 import axios from "axios";
 
 function NewUser(props) {
-  let {emailText, setEmailText, passwordText, setPasswordText} = props
 
+  //state
+  const [emailAlert, setEmailAlert] = useState("")
+  let {
+    emailText,
+    setEmailText,
+    passwordText,
+    setPasswordText,
+  } = props;
+
+  //handle text state
   function handleEmailTyping(event) {
     setEmailText(event.target.value);
+    setEmailAlert("")
   }
-
   function handlePasswordTyping(event) {
     setPasswordText(event.target.value);
   }
@@ -28,26 +37,30 @@ function NewUser(props) {
   }
 
   function handleSubmit() {
-    const userInput = { email: emailText, password: passwordText };
-    // console.log(userInput);
-
-    // put address to api handle new user submission below
-    axios
-      .post("", userInput)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {});
+    axios({
+      method: "POST",
+      data: {
+        email: emailText,
+        password: passwordText,
+      },
+      withCredentials: true,
+      url: "http://localhost:3050/register",
+    }).then((response) => {
+      console.log(response.data)
+      if (response.data === "duplicate") {
+        setEmailAlert("This email is already registered as an account")
+      }
+    });
   }
 
   return (
     <div>
       <div id="title">New User</div>
       <Form>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group
+          className="mb-3"
+          controlId="formBasicEmail"
+        >
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -57,11 +70,16 @@ function NewUser(props) {
             onKeyPress={handleKeyPress}
           />
           <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
+            We'll never share your email with
+            anyone else.
           </Form.Text>
+          <div id="emailAlert">{emailAlert}</div>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group
+          className="mb-3"
+          controlId="formBasicPassword"
+        >
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -72,7 +90,11 @@ function NewUser(props) {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit" onClick={submitButton}>
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={submitButton}
+        >
           Submit
         </Button>
       </Form>

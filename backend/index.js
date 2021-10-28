@@ -64,12 +64,13 @@ app.post("/login", (req, res) => {
 });
 app.post("/register", (req, res) => {
   console.log("\nbody:", req.body);
+  handleNewAccount(req, res)
 });
 app.get("/user", (req, res) => {});
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/gamePlay.html");
-}); // <-- sends card game html
+}); // <-- sends card game html version
 
 app.get("/auth/google", (req, res) => {
   passport.use(
@@ -105,10 +106,6 @@ app.get(
 );
 
 app.put("/newAccount", (req, res) => {});
-
-app.get("/newAccountSubmission", (req, res) => {
-  handleNewAccount(req, res);
-});
 
 app.put("/getCards", (req, res) => {
   const cards = getCards(req, res);
