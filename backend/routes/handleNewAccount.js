@@ -27,6 +27,9 @@ function handleNewAccount(req, res) {
           console.log("dupe")
           res.send("duplicate");
         }
+        if (resp.rows[0].email !== email) {
+          //add new user to db
+        }
       }
     }
   );

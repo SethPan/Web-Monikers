@@ -46,7 +46,6 @@ function NewUser(props) {
       withCredentials: true,
       url: "http://localhost:3050/register",
     }).then((response) => {
-      console.log(response.data)
       if (response.data === "duplicate") {
         setEmailAlert("This email is already registered as an account")
       }
