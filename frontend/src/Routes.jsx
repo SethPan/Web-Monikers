@@ -9,8 +9,7 @@ function Routes(props) {
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] =
     useState("");
-  let currentComp = <div>
-  </div>
+  let currentComp = <div></div>;
 
   if (page === "newUser") {
     currentComp = (

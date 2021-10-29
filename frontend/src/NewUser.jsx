@@ -5,23 +5,21 @@ import { useState } from "react";
 import axios from "axios";
 
 function NewUser(props) {
-
   //state
-  const [emailAlert, setEmailAlert] = useState("")
-  let {
-    emailText,
-    setEmailText,
-    passwordText,
-    setPasswordText,
-  } = props;
+  const [emailAlert, setEmailAlert] = useState("");
+  const [usernameText, setUserNameText] = useState("");
+  let { emailText, setEmailText, passwordText, setPasswordText } = props;
 
   //handle text state
   function handleEmailTyping(event) {
     setEmailText(event.target.value);
-    setEmailAlert("")
+    setEmailAlert("");
   }
   function handlePasswordTyping(event) {
     setPasswordText(event.target.value);
+  }
+  function handleUsernameTyping(event) {
+    setUserNameText(event.target.value);
   }
 
   function handleKeyPress(event) {
@@ -40,6 +38,7 @@ function NewUser(props) {
     axios({
       method: "POST",
       data: {
+        username: usernameText,
         email: emailText,
         password: passwordText,
       },
@@ -47,7 +46,7 @@ function NewUser(props) {
       url: "http://localhost:3050/register",
     }).then((response) => {
       if (response.data === "duplicate") {
-        setEmailAlert("This email is already registered as an account")
+        setEmailAlert("This email is already registered as an account");
       }
     });
   }
@@ -56,10 +55,19 @@ function NewUser(props) {
     <div>
       <div id="title">New User</div>
       <Form>
-        <Form.Group
-          className="mb-3"
-          controlId="formBasicEmail"
-        >
+        <Form.Group className="mb-3" controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="username"
+            placeholder="Enter a username"
+            value={usernameText}
+            onChange={handleUsernameTyping}
+            onKeyPress={handleKeyPress}
+          />
+          <Form.Text className="text-muted">This will be your display name.</Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -69,16 +77,12 @@ function NewUser(props) {
             onKeyPress={handleKeyPress}
           />
           <Form.Text className="text-muted">
-            We'll never share your email with
-            anyone else.
+            We'll never share your email with anyone else.
           </Form.Text>
           <div id="emailAlert">{emailAlert}</div>
         </Form.Group>
 
-        <Form.Group
-          className="mb-3"
-          controlId="formBasicPassword"
-        >
+        <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -89,11 +93,7 @@ function NewUser(props) {
           />
         </Form.Group>
 
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={submitButton}
-        >
+        <Button variant="primary" type="submit" onClick={submitButton}>
           Submit
         </Button>
       </Form>

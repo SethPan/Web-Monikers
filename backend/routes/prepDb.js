@@ -44,7 +44,7 @@ function prepDb() {
 
   // //use to manually add columns easily in testing
   // client.query(
-  //   `INSERT INTO users(username, password, id, email) VALUES ('Seth', 'password', 1, 'stpanousis@comcast.net')`,
+  //   `INSERT INTO users(username, password, id, email) VALUES ('Seth', 'password', 1, lower('${stpanousis@comcast.net}'))`,
   //   (err, resp) => {
   //     if (err) {
   //       console.log("\ninsert into users error\n", err);
