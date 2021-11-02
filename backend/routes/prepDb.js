@@ -1,7 +1,6 @@
 const { Pool, Client } = require("pg");
-
-const connectionString =
-  "postgressql://postgres:password@localhost:5432/webmonikers";
+const connectionString = "postgressql://postgres:password@localhost:5432/webmonikers";
+const bcrypt = require("bcryptjs");
 
 function prepDb() {
   const client = new Client({
@@ -54,8 +53,6 @@ function prepDb() {
     }
   );
 
-
-
   // //use to manually add columns easily in testing
   // client.query(
   //   `INSERT INTO users(username, password, id, email) VALUES ('Seth', 'password', 1, lower('${stpanousis@comcast.net}'))`,
@@ -68,18 +65,18 @@ function prepDb() {
   //   }
   // );
 
-    //test to be used as password check
-    client.query(
-      `SELECT password FROM users
+  //test to be used as password check
+  client.query(
+    `SELECT password FROM users
     WHERE email = 'stpanousis@comcast.net'`,
-      (err, resp) => {
-        if (err) {
-          console.log("\nselect password from users where... error\n", err);
-        } else {
-          console.log(resp.rows[0].password);
-        }
+    (err, resp) => {
+      if (err) {
+        console.log("\nselect password from users where... error\n", err);
+      } else {
+        console.log(resp.rows[0].password);
       }
-    );
+    }
+  );
 
   client.query(
     `CREATE TABLE IF NOT EXISTS cards
