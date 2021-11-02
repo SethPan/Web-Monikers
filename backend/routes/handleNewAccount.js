@@ -33,7 +33,9 @@ function handleNewAccount(req, res) {
           res.send("duplicate");
         }
         if (resp.rows[0].email !== email) {
+          //check if email is a valid email
           //add a genorator to assign an id number to users, or get rid of id number
+          //hash and salt password
           client.query(
             `INSERT INTO users(username, password, id, email) VALUES ('${username}', '${password}', '${generateId()}', lower('${email}'))`,
             (err, resp) => {

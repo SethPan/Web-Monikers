@@ -26,6 +26,20 @@ function prepDb() {
   );
 
   client.query(
+    `CREATE TABLE IF NOT EXISTS cards
+    (name TEXT UNIQUE NOT NULL, 
+      text TEXT , 
+      points INTEGER)`,
+    (err, resp) => {
+      if (err) {
+        console.log("\ncreate table cards error\n", err);
+      } else {
+        //console.log(resp);
+      }
+    }
+  );
+
+  client.query(
     `ALTER TABLE users ADD COLUMN IF NOT EXISTS
     username TEXT UNIQUE NOT NULL, 
     ADD COLUMN IF NOT EXISTS password TEXT NOT NULL, 
