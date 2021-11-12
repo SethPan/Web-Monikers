@@ -2,7 +2,8 @@ const { Pool, Client } = require("pg");
 const connectionString = "postgressql://postgres:password@localhost:5432/webmonikers";
 const bcrypt = require("bcryptjs");
 
-function prepDb() {
+async function prepDb() {
+  const hashedTestPassword = await bcrypt.hash('password', 11);
   const client = new Client({
     connectionString: connectionString,
   });
@@ -64,6 +65,13 @@ function prepDb() {
   //     }
   //   }
   // );
+
+  //update password to hashed salted version
+  client.query(
+    `UPDATE users 
+    SET password = '${hashedTestPassword}'
+    WHERE email = 'stpanousis@comcast.net'`
+  )
 
   //test to be used as password check
   client.query(

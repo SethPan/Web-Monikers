@@ -2,7 +2,7 @@ const { Pool, Client } = require("pg");
 const connectionString = "postgressql://postgres:password@localhost:5432/webmonikers";
 const bcrypt = require("bcryptjs");
 
-function handleLogin(req, res) {
+async function handleLogin(req, res) {
   const client = new Client({
     connectionString: connectionString,
   });

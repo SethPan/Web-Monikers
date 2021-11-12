@@ -2,7 +2,7 @@ const { Pool, Client } = require("pg");
 const connectionString = "postgressql://postgres:password@localhost:5432/webmonikers";
 const bcrypt = require("bcryptjs");
 
-function handleNewAccount(req, res) {
+async function handleNewAccount(req, res) {
   const client = new Client({
     connectionString: connectionString,
   });
@@ -12,7 +12,7 @@ function handleNewAccount(req, res) {
   //input fields sent from client
   const email = req.body.email;
   const password = req.body.password;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 11);
   const username = req.body.username;
 
   function generateId() {}

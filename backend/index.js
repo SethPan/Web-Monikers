@@ -57,7 +57,6 @@ app.use(
 app.use(cookieParser("secretcode"));
 
 //routes
-
 app.post("/login", (req, res) => {
   console.log("\nbody:", req.body);
   handleLogin(req, res);
