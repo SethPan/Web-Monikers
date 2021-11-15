@@ -27,7 +27,19 @@ async function handleLogin(req, res) {
       } else {
         if (resp.rows[0].password === hashedPassword) {
           console.log("query passed");
-          passport(email, password)
+          client.query(
+            `SELECT id FROM users
+            WHERE email = lower('${email}')`,
+            (err, resp) => {
+              if (err) {
+                console.log("error finding user id in db", err)
+              } else {
+                const id = resp.rows[0].id
+                passport(email, password, id)
+              }
+            }
+          );
+          
         }
       }
     }
