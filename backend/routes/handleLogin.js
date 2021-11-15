@@ -1,6 +1,7 @@
 const { Pool, Client } = require("pg");
 const connectionString = "postgressql://postgres:password@localhost:5432/webmonikers";
 const bcrypt = require("bcryptjs");
+const passport = require("./passportConfig.js")
 
 async function handleLogin(req, res) {
   const client = new Client({
@@ -26,7 +27,7 @@ async function handleLogin(req, res) {
       } else {
         if (resp.rows[0].password === hashedPassword) {
           console.log("query passed");
-          //return from function here
+          passport(email, password)
         }
       }
     }
