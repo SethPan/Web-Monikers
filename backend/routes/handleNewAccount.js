@@ -16,8 +16,6 @@ async function handleNewAccount(req, res) {
   const username = req.body.username;
   const uniqueID = await bcrypt.hash(req.body.email.toLowerCase(), 5)
 
-  function generateId() {}
-
   client.query(
     `SELECT email FROM users
   WHERE email = lower('${email}')`,
