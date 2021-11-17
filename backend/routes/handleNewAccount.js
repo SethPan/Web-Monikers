@@ -14,6 +14,7 @@ async function handleNewAccount(req, res) {
   const password = req.body.password;
   const hashedPassword = await bcrypt.hash(password, 11);
   const username = req.body.username;
+  const uniqueID = await bcrypt.hash(req.body.email.toLowerCase(), 5)
 
   function generateId() {}
 
@@ -32,7 +33,7 @@ async function handleNewAccount(req, res) {
           //check if email is a valid email
           //add a genorator to assign an id number to users, or get rid of id number
           client.query(
-            `INSERT INTO users(username, password, id, email) VALUES ('${username}', '${hashedPassword}', '${generateId()}', lower('${email}'))`,
+            `INSERT INTO users(username, password, id, email) VALUES ('${username}', '${hashedPassword}', '${uniqueID}', lower('${email}'))`,
             (err, resp) => {
               if (err) {
                 console.log("\ninsert into users error\n", err);

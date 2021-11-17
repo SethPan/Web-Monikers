@@ -62,7 +62,7 @@ app.post("/login", (req, res) => {
   handleLogin(req, res);
 });
 app.post("/register", (req, res) => {
-  console.log("\nbody:", req.body);
+  //console.log("\nbody:", req.body);
   handleNewAccount(req, res)
 });
 app.get("/user", (req, res) => {});

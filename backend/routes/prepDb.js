@@ -3,7 +3,10 @@ const connectionString = "postgressql://postgres:password@localhost:5432/webmoni
 const bcrypt = require("bcryptjs");
 
 async function prepDb() {
-  const hashedTestPassword = await bcrypt.hash('password', 11);
+  const testEmail = "stpanousis@comcast.net"
+  const testPassword = "password"
+  const hashedTestPassword = await bcrypt.hash(testPassword, 11);
+  const testID = await bcrypt.hash(testEmail.toLowerCase(), 5)
   const client = new Client({
     connectionString: connectionString,
   });
@@ -14,7 +17,7 @@ async function prepDb() {
     `CREATE TABLE IF NOT EXISTS users
     (username TEXT UNIQUE NOT NULL, 
       password TEXT NOT NULL, 
-      id INTEGER UNIQUE, 
+      id TEXT UNIQUE, 
       email TEXT UNIQUE NOT NULL)`,
     (err, resp) => {
       if (err) {
@@ -43,7 +46,7 @@ async function prepDb() {
     `ALTER TABLE users ADD COLUMN IF NOT EXISTS
     username TEXT UNIQUE NOT NULL, 
     ADD COLUMN IF NOT EXISTS password TEXT NOT NULL, 
-    ADD COLUMN IF NOT EXISTS id INTEGER UNIQUE, 
+    ADD COLUMN IF NOT EXISTS id TEXT UNIQUE, 
     ADD COLUMN IF NOT EXISTS email TEXT UNIQUE NOT NULL`,
     (err, resp) => {
       if (err) {
@@ -56,7 +59,7 @@ async function prepDb() {
 
   // //use to manually add columns easily in testing
   // client.query(
-  //   `INSERT INTO users(username, password, id, email) VALUES ('Seth', 'password', 1, lower('${stpanousis@comcast.net}'))`,
+  //   `INSERT INTO users(username, password, id, email) VALUES ('Seth', '${hashedTestPassword}', '${testID}', lower('${testEmail}'))`,
   //   (err, resp) => {
   //     if (err) {
   //       console.log("\ninsert into users error\n", err);
@@ -66,10 +69,15 @@ async function prepDb() {
   //   }
   // );
 
-  //update password to hashed salted version
+  //update queries to change data in columns
   client.query(
     `UPDATE users 
     SET password = '${hashedTestPassword}'
+    WHERE email = 'stpanousis@comcast.net'`
+  )
+  client.query(
+    `UPDATE users 
+    SET id = '${testID}'
     WHERE email = 'stpanousis@comcast.net'`
   )
 
@@ -102,5 +110,14 @@ async function prepDb() {
       client.end();
     }
   );
+
+  // //alter column data type
+  // client.query(`
+  // ALTER TABLE users 
+  // ALTER COLUMN id TYPE TEXT`, (err, resp) => {
+  //   if (err) {
+  //     console.log(err)
+  //   }
+  // })
 }
 module.exports = prepDb;
