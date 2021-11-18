@@ -25,6 +25,9 @@ async function handleLogin(req, res) {
       if (err) {
         console.log("\nhandle login error\n", err);
       } else {
+        if (resp.rows[0].password !== hashedPassword) {
+          res.send('no user exists')
+        }
         if (resp.rows[0].password === hashedPassword) {
           console.log("query passed");
           client.query(
@@ -35,7 +38,8 @@ async function handleLogin(req, res) {
                 console.log("error finding user id in db", err)
               } else {
                 const id = resp.rows[0].id
-                passport(email, password, id)
+                const user = {email, password, id}
+                passport.authenticate("local", (err, user))
               }
             }
           );

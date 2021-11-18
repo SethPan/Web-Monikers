@@ -55,15 +55,18 @@ app.use(
   })
 );
 app.use(cookieParser("secretcode"));
+app.use(passport.initialize());
+app.use(passport.session());
+require("./routes/passportConfig")(passport);
 
 //routes
-app.post("/login", (req, res) => {
-  console.log("\nbody:", req.body);
+app.post("/login", (req, res, next) => {
+  // console.log("\nbody:", req.body);
   handleLogin(req, res);
 });
 app.post("/register", (req, res) => {
-  //console.log("\nbody:", req.body);
-  handleNewAccount(req, res)
+  console.log("\nbody:", req.body);
+  handleNewAccount(req, res);
 });
 app.get("/user", (req, res) => {});
 
@@ -103,8 +106,6 @@ app.get(
     res.redirect("/");
   }
 );
-
-app.put("/newAccount", (req, res) => {});
 
 app.put("/getCards", (req, res) => {
   const cards = getCards(req, res);
