@@ -3,10 +3,10 @@ const connectionString = "postgressql://postgres:password@localhost:5432/webmoni
 const bcrypt = require("bcryptjs");
 
 async function prepDb() {
-  const testEmail = "stpanousis@comcast.net"
-  const testPassword = "password"
+  const testEmail = "stpanousis@comcast.net";
+  const testPassword = "password";
   const hashedTestPassword = await bcrypt.hash(testPassword, 11);
-  const testID = await bcrypt.hash(testEmail.toLowerCase(), 5)
+  const testID = await bcrypt.hash(testEmail.toLowerCase(), 5);
   const client = new Client({
     connectionString: connectionString,
   });
@@ -43,8 +43,8 @@ async function prepDb() {
   );
 
   client.query(
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS
-    username TEXT UNIQUE NOT NULL, 
+    `ALTER TABLE users 
+    ADD COLUMN IF NOT EXISTS username TEXT UNIQUE NOT NULL, 
     ADD COLUMN IF NOT EXISTS password TEXT NOT NULL, 
     ADD COLUMN IF NOT EXISTS id TEXT UNIQUE, 
     ADD COLUMN IF NOT EXISTS email TEXT UNIQUE NOT NULL`,
@@ -74,12 +74,12 @@ async function prepDb() {
     `UPDATE users 
     SET password = '${hashedTestPassword}'
     WHERE email = 'stpanousis@comcast.net'`
-  )
+  );
   client.query(
     `UPDATE users 
     SET id = '${testID}'
     WHERE email = 'stpanousis@comcast.net'`
-  )
+  );
 
   //test to be used as password check
   client.query(
@@ -93,6 +93,18 @@ async function prepDb() {
       }
     }
   );
+
+  // //alter column data type
+  // client.query(
+  //   `
+  // ALTER TABLE users
+  // ALTER COLUMN id TYPE TEXT`,
+  //   (err, resp) => {
+  //     if (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  // );
 
   client.query(
     `CREATE TABLE IF NOT EXISTS cards
@@ -110,14 +122,5 @@ async function prepDb() {
       client.end();
     }
   );
-
-  // //alter column data type
-  // client.query(`
-  // ALTER TABLE users 
-  // ALTER COLUMN id TYPE TEXT`, (err, resp) => {
-  //   if (err) {
-  //     console.log(err)
-  //   }
-  // })
 }
 module.exports = prepDb;

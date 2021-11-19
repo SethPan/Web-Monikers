@@ -11,7 +11,18 @@ module.exports = function (passport) {
     callback(null, user.id);
   });
   passport.deserializeUser((id, callback) => {
-    callback(err, id);
+    client.query(
+      `SELECT id FROM users
+      WHERE id = '${id}'`,
+      (err, resp) => {
+        if (err) {
+          console.log("error finding user id in db", err)
+        } else {
+          callback(err, id);
+        }
+      }
+    );
+   
   });
 }
 
