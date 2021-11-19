@@ -24,7 +24,7 @@ async function handleLogin(req, res) {
       if (err) {
         console.log("\nhandle login error\n", err);
       } else {
-        bcrypt.compare(resp.rows[0].password, hashedPassword, (err, result) => {
+        bcrypt.compare(password, resp.rows[0].password, (err, result) => {
           if (err) throw err;
           if (result === false) {
             console.log('query failed')
