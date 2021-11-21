@@ -68,7 +68,7 @@ app.post("/login", async (req, res, next) => {
     if (err) throw err;
     if (!user) res.send("no user exists");
     else {
-      console.log(`${user.username} logged in`);
+      console.log(`${userinfo.username} logged in`);
       res.send("successfully authenticated");
     }
   });

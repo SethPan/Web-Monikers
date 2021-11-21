@@ -4,16 +4,18 @@ const localStrategy = require("passport-local").Strategy;
 module.exports = function (passport) {
   passport.use(
     new localStrategy((user, id, done) => {
+      console.log('hi')
       return done(null, user);
     })
   );
-  passport.serializeUser((user, callback) => {
-    callback(null, user.id);
+  passport.serializeUser((userInfo, callback) => {
+    console.log('hi')
+    callback(null, userInfo.id);
   });
-  passport.deserializeUser((id, callback) => {
+  passport.deserializeUser((userInfo, callback) => {
     client.query(
       `SELECT id FROM users
-      WHERE id = '${id}'`,
+      WHERE id = '${userInfo.id}'`,
       (err, resp) => {
         if (err) {
           console.log("error finding user id in db", err)

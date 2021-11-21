@@ -21,12 +21,18 @@ async function handleLogin(req, res) {
     (err, resp) => {
       if (err) {
         console.log("\nhandle login error\n", err);
+        throw err;
       } else {
+        console.log("\nrow count:", resp.rowCount, "\n")
+        if (resp.rowCount === 0) {
+          res.send('user does not exist')
+          return
+        }
         bcrypt.compare(password, resp.rows[0].password, (err, result) => {
           if (err) throw err;
           if (result === false) {
             console.log("query failed");
-            res.send("no user exists");
+            res.send("password is incorrect");
           }
           if (result === true) {
             console.log("query passed");
@@ -46,6 +52,7 @@ async function handleLogin(req, res) {
                       else {
                         username = resp.rows[0].username;
                         const user = { username, email, password, id };
+                        console.log(user);
                         return user;
                       }
                     }
