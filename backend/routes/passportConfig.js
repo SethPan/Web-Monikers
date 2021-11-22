@@ -5,7 +5,7 @@ module.exports = function (passport) {
   passport.use(
     new localStrategy((user, id, done) => {
       console.log('hi')
-      return done(null, user);
+      return done(null, userInfo);
     })
   );
   passport.serializeUser((userInfo, callback) => {

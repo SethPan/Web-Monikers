@@ -62,16 +62,19 @@ require("./routes/passportConfig")(passport);
 //routes
 app.post("/login", async (req, res, next) => {
   // console.log("\nbody:", req.body);
-  const userinfo = await handleLogin(req, res);
-  console.log("user info:", userinfo)
+  const userInfo = await handleLogin(req, res);
+  console.log("user info:", userInfo)
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
     if (!user) res.send("no user exists");
     else {
-      console.log(`${userinfo.username} logged in`);
-      res.send("successfully authenticated");
+      req.login(user, (err) => {
+        console.log(`${userinfo.username} logged in`);
+        res.send("successfully authenticated");
+        console.log(req.user)
+      })
     }
-  });
+  })(req, res, next);
 });
 app.post("/register", (req, res) => {
   console.log("\nbody:", req.body);
