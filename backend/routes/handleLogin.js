@@ -18,13 +18,17 @@ async function handleLogin(req, res) {
   //CAN HAVE AUTHENTICATION OF INPUTS HERE
 
   const hashedPassword = await getHashedPassword(res, email, client)
-  await compareHashcodes(res, password, hashedPassword)
+  compareHashcodes(res, password, hashedPassword)
 
   const username = await getUsername(email, client)
   const id = await getId(email, client)
   const user = { username, email, password, id }
   console.log(user)
-  return user
+  return new Promise((resolve, reject) => {
+    if (user) {
+      resolve(user)
+    }
+  })
 }
 
 
@@ -38,7 +42,11 @@ async function getId(email, client) {
         console.log("error finding user id in db", err);
       } else {
         const id = resp.rows[0].id;
-        return id
+        return new Promise((resolve, reject) => {
+          if (id) {
+            resolve(id)
+          }
+        })
       }
     }
   );
@@ -57,7 +65,11 @@ async function getHashedPassword(res, email, client) {
           return
         } else {
           const hashedPassword = resp.rows[0].password
-          return hashedPassword
+          return new Promise((resolve, reject) => {
+            if (hashedPassword) {
+              resolve(hashedPassword)
+            }
+          })
         }
     } 
   );
@@ -69,8 +81,12 @@ async function getUsername(email, client) {
     (err, resp) => {
       if (err) console.log("error retriving username after login", err);
       else {
-        username = resp.rows[0].username;
-        return username
+        const username = resp.rows[0].username;
+        return new Promise((resolve, reject) => {
+          if (username) {
+            resolve(username)
+          }
+        })
       }
     }
   );
@@ -78,14 +94,17 @@ async function getUsername(email, client) {
 
 async function compareHashcodes(res, password, hashedPassword) {
   await bcrypt.compare(password, hashedPassword, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err)
+      throw err;
+    }
     if (result === false) {
       console.log("password incorrect");
       res.send("password is incorrect");
+      return
     }
     if (result === true) {
       console.log("correct password");
-      
     }
   });
 }
