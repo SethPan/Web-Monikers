@@ -17,24 +17,21 @@ async function handleLogin(req, res) {
 
   //CAN HAVE AUTHENTICATION OF INPUTS HERE
 
-  const hashedPassword = await getHashedPassword(res, email, client)
-  compareHashcodes(res, password, hashedPassword)
+  const hashedPassword = getHashedPassword(res, email, client)
+  console.log("\nhashedPassword:", hashedPassword)
+  // compareHashcodes(res, password, hashedPassword)
 
-  const username = await getUsername(email, client)
-  const id = await getId(email, client)
+  const username = getUsername(email, client)
+  const id = getId(email, client)
   const user = { username, email, password, id }
-  console.log(user)
-  return new Promise((resolve, reject) => {
-    if (user) {
-      resolve(user)
-    }
-  })
+  console.log("\nuser:", user)
+  return user
 }
 
 
 
-async function getId(email, client) {
-  await client.query(
+function getId(email, client) {
+  client.query(
     `SELECT id FROM users
     WHERE email = lower('${email}')`,
     (err, resp) => {
@@ -42,18 +39,14 @@ async function getId(email, client) {
         console.log("error finding user id in db", err);
       } else {
         const id = resp.rows[0].id;
-        return new Promise((resolve, reject) => {
-          if (id) {
-            resolve(id)
-          }
-        })
+        return id
       }
     }
   );
 }
 
-async function getHashedPassword(res, email, client) {
-  await client.query(
+function getHashedPassword(res, email, client) {
+  client.query(
     `SELECT password FROM users
   WHERE email = lower('${email}')`,
     (err, resp) => {
@@ -65,28 +58,21 @@ async function getHashedPassword(res, email, client) {
           return
         } else {
           const hashedPassword = resp.rows[0].password
-          return new Promise((resolve, reject) => {
-            if (hashedPassword) {
-              resolve(hashedPassword)
-            }
-          })
+          // console.log("\nhashed password:", hashedPassword)
+          return hashedPassword
         }
     } 
   );
 }
 
-async function getUsername(email, client) {
-  await client.query(
+function getUsername(email, client) {
+  client.query(
     `SELECT username FROM users WHERE email = lower('${email}')`,
     (err, resp) => {
       if (err) console.log("error retriving username after login", err);
       else {
         const username = resp.rows[0].username;
-        return new Promise((resolve, reject) => {
-          if (username) {
-            resolve(username)
-          }
-        })
+        return username
       }
     }
   );
@@ -101,10 +87,11 @@ async function compareHashcodes(res, password, hashedPassword) {
     if (result === false) {
       console.log("password incorrect");
       res.send("password is incorrect");
-      return
+      return "password is incorrect"
     }
     if (result === true) {
       console.log("correct password");
+      return "correct password"
     }
   });
 }

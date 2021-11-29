@@ -60,10 +60,10 @@ app.use(passport.session());
 require("./routes/passportConfig")(passport);
 
 //routes
-app.post("/login", async (req, res, next) => {
+app.post("/login", (req, res, next) => {
   // console.log("\nbody:", req.body);
-  const userInfo = await handleLogin(req, res);
-  console.log("user info:", userInfo)
+  const userInfo = handleLogin(req, res);
+  console.log("userInfo (index side):", userInfo)
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
     if (!user) res.send("no user exists");
