@@ -89,7 +89,7 @@ async function prepDb() {
       if (err) {
         console.log("\nselect password from users where... error\n", err);
       } else {
-        console.log(resp.rows[0].password);
+        // console.log(resp.rows[0].password);
       }
     }
   );
