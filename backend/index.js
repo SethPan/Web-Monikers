@@ -8,7 +8,7 @@ const port = 3050;
 const cors = require("cors");
 const { Server } = require("socket.io");
 
-//routes
+//route modules
 const handleLogin = require("./routes/handleLogin.js");
 const handleNewAccount = require("./routes/handleNewAccount.js");
 const getCards = require("./routes/getCards.js");
@@ -30,10 +30,9 @@ const tokenSecret = process.env.GOOGLE_CONSUMER_SECRET;
 const { OAuth2Client } = require("google-auth-library");
 const OAuth2client = new OAuth2Client(token);
 
-//this to test and prepare dB
-prepDb();
+prepDb(); //this to test and prepare dB
 
-//basic cors setup
+//------------------basic cors setup-----------------------
 app.use(
   cors({
     origin: "http://localhost:3000", // <-- location of react app
@@ -46,7 +45,7 @@ app.use(express.json({ extended: true }));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
-//more middleware
+//-----------------------more middleware----------------------
 app.use(
   session({
     secret: "secretcode",
@@ -59,7 +58,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 require("./routes/passportConfig")(passport);
 
-//routes
+//--------------------------routes-------------------------------
 app.post("/login", async (req, res, next) => {
   // console.log("\nbody:", req.body);
   const userInfo = await handleLogin(req, res);
@@ -76,10 +75,12 @@ app.post("/login", async (req, res, next) => {
     }
   })(req, res, next);
 });
+
 app.post("/register", (req, res) => {
   console.log("\nbody:", req.body);
   handleNewAccount(req, res);
 });
+
 app.get("/user", (req, res) => {});
 
 app.get("/", (req, res) => {
@@ -124,6 +125,7 @@ app.put("/getCards", (req, res) => {
   res.send(cards);
 });
 
+//--------------------monikers logic----------------------
 class cardPool {
   constructor(title, description, value) {
     this.title = title;
@@ -131,6 +133,7 @@ class cardPool {
     this.title.value = value;
   }
 }
+
 //make this retrieve cards from db
 const cards = [
   { title: 1, description: 1, value: 1 },

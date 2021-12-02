@@ -17,7 +17,10 @@ async function handleLogin(req, res) {
 
   const hashedPassword = await getHashedPassword(res, email, client);
   // console.log("\nhashed Password (in parent function):", hashedPassword);
-  compareHashcodes(res, password, hashedPassword)
+  if (compareHashcodes(res, password, hashedPassword) !== "correct password") {
+    res.send("password incorrect")
+    return
+  }
 
   const username = await getUsername(email, client);
   const id = await getId(email, client);
@@ -65,7 +68,7 @@ async function compareHashcodes(res, password, hashedPassword) {
     }
     if (result === false) {
       console.log("password incorrect");
-      return "password is incorrect"; //can be handled
+      return "password is incorrect";
     }
     if (result === true) {
       console.log("correct password");

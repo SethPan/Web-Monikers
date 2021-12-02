@@ -11,7 +11,7 @@ async function prepDb() {
     connectionString: connectionString,
   });
   client.connect();
-  console.log("\nprepDb running\n");
+  console.log("prepDb running");
 
   client.query(
     `CREATE TABLE IF NOT EXISTS users
