@@ -11,18 +11,18 @@ async function handleLogin(req, res) {
     connectionString: connectionString,
   });
   client.connect();
-  console.log("\nhandleLogin running \n");
+  console.log("\nhandleLogin running");
 
   //CAN HAVE AUTHENTICATION OF INPUTS HERE
 
   const hashedPassword = await getHashedPassword(res, email, client);
-  console.log("\nhashed Password (in parent function):", hashedPassword);
+  // console.log("\nhashed Password (in parent function):", hashedPassword);
   compareHashcodes(res, password, hashedPassword)
 
   const username = await getUsername(email, client);
   const id = await getId(email, client);
   const user = { username, email, password, id };
-  console.log("\nuser:", user);
+  // console.log("\nuser:", user);
   return user;
 }
 
@@ -35,7 +35,7 @@ async function getHashedPassword(res, email, client) {
     return "user does not exist"; //can be handled
   } else {
     const hashedPassword = resp.rows[0].password;
-    console.log("\nhashed password (in function after query):", hashedPassword);
+    // console.log("\nhashed password (in function after query):", hashedPassword);
     return hashedPassword;
   }
 }
