@@ -49,7 +49,7 @@ app.use(express.json({ extended: true }));
 app.use(
   session({
     secret: "secretcode",
-    resave: true,
+    resave: false,
     saveUninitialized: true,
   })
 );
@@ -62,13 +62,17 @@ require("./routes/passportConfig")(passport);
 app.post("/login", async (req, res, next) => {
   // console.log("\nbody:", req.body);
   const userInfo = await handleLogin(req, res);
-  // console.log("userInfo (index side):", userInfo)
-  passport.authenticate("local", (err, user, info) => {
+  console.log("userInfo (index side):", userInfo)
+  if (userInfo === "password incorrect") {
+    return
+  }
+  passport.authenticate("local", (err, userInfo, info) => {
+    console.log("hi")
     if (err) throw err;
-    if (!user) res.send("no user exists");
+    if (!userInfo) res.send("no user exists");
     else {
       req.login(user, (err) => {
-        console.log(`${userinfo.username} logged in`);
+        console.log(`${userInfo.username} logged in`);
         res.send("successfully authenticated");
         console.log(req.user)
       })
@@ -76,9 +80,9 @@ app.post("/login", async (req, res, next) => {
   })(req, res, next);
 });
 
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
   console.log("\nbody:", req.body);
-  handleNewAccount(req, res);
+  await handleNewAccount(req, res);
 });
 
 app.get("/user", (req, res) => {});

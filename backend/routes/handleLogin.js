@@ -6,22 +6,19 @@ async function handleLogin(req, res) {
   //input fields sent from client
   const email = req.body.email;
   const password = req.body.password;
-
   const client = new Client({
     connectionString: connectionString,
   });
   client.connect();
   console.log("\nhandleLogin running");
-
-  //CAN HAVE AUTHENTICATION OF INPUTS HERE
-
+  //>---CAN HAVE AUTHENTICATION OF INPUTS HERE---<
   const hashedPassword = await getHashedPassword(res, email, client);
   // console.log("\nhashed Password (in parent function):", hashedPassword);
-  if (compareHashcodes(res, password, hashedPassword) !== "correct password") {
+  console.log(await compareHashcodes(res, password, hashedPassword))
+  if (await compareHashcodes(res, password, hashedPassword) !== "correct password") {
     res.send("password incorrect")
-    return
+    return "password incorrect"
   }
-
   const username = await getUsername(email, client);
   const id = await getId(email, client);
   const user = { username, email, password, id };
