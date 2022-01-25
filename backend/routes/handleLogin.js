@@ -13,14 +13,14 @@ async function handleLogin(req, res) {
   console.log("\nhandleLogin running");
   //>---CAN HAVE AUTHENTICATION OF INPUTS HERE---<
   const hashedPassword = await getHashedPassword(res, email, client);
-  console.log("\nhashed Password (in parent function):", hashedPassword);
+  // console.log("\nhashed Password (in parent function):", hashedPassword);
 
   await compareHashcodes(res, password, hashedPassword);
 
   const username = await getUsername(email, client);
   const id = await getId(email, client);
   const user = { username, email, password, id };
-  console.log("\nuser:", user);
+  console.log("\nuser (from handleLogin):", user);
   return user;
 }
 
@@ -62,12 +62,12 @@ async function compareHashcodes(res, password, hashedPassword) {
       throw err;
     }
     if (result === false) {
-      console.log("password incorrect");
+      console.log("password incorrect (from handleLogin)");
       res.send("password incorrect");
       return "password incorrect";
     }
     if (result === true) {
-      console.log("correct password");
+      console.log("correct password (from handleLogin)");
     }
   });
 }

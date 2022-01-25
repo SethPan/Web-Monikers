@@ -21,10 +21,10 @@ async function handleNewAccount(req, res) {
   WHERE email = lower('${email}')`,
     (err, resp) => {
       if (err) {
-        console.log("\nhandle new user error checking db for email provided\n", err);
+        console.log("\nhandleNewAccount error checking db for email provided\n", err);
       } else {
         if (resp.rows[0].email === email) {
-          console.log("duplicate email");
+          console.log("duplicate email (in handleNewAccount)");
           res.send("duplicate email");
         }
         if (resp.rows[0].email !== email) {

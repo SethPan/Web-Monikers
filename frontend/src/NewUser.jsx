@@ -9,6 +9,7 @@ function NewUser(props) {
   const [emailAlert, setEmailAlert] = useState("");
   const [usernameText, setUserNameText] = useState("");
   let { emailText, setEmailText, passwordText, setPasswordText } = props;
+  const setNewPage = props.setNewPage;
 
   //handle text state
   function handleEmailTyping(event) {
@@ -47,6 +48,9 @@ function NewUser(props) {
     }).then((response) => {
       if (response.data === "duplicate") {
         setEmailAlert("This email is already registered as an account");
+      }
+      if (response.data === "user added") {
+        setNewPage("newUserAdded");
       }
     });
   }
