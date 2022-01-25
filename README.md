@@ -1,6 +1,9 @@
 # Web-Monikers
 
-Web Monikers is a full-stack react/express/sql multiplayer card game based on the game monikers, which is similar to charades. It has video, a user database/login/authentication, and customizable monikers cards so you tailor the game to your friend group.
+Web Monikers is a full-stack react/express/postgreSQL multiplayer card game based on the game monikers, which is similar to charades. It has video, a user database/login/authentication, and customizable monikers cards so you tailor the game to your friend group.
+
+If you want to understand the game, check out this video:
+https://www.youtube.com/watch?v=zePWw6IRrbg
 
 # Installation
 
