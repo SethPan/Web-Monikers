@@ -8,8 +8,8 @@ function NewUserAdded(props) {
   let { emailText, setEmailText, passwordText, setPasswordText } = props;
   const setNewPage = props.setNewPage;
 
-  function continueButton() {
-    // event.preventDefault();
+  function continueButton(event) {
+    event.preventDefault();
     setNewPage("login");
   }
 
